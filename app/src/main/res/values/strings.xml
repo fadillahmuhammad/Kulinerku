@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Kulinerku</string>
+    <string name="welcome_title">Welcome Kulinerers!</string>
+    <string name="welcome_description">Searching for SME restaurants and cafes is now easier according to your preferences!</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="button_login">Button Login</string>
+    <string name="button_register">Button Register</string>
 </resources>

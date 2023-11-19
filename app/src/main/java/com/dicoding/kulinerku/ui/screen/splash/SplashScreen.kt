@@ -11,8 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import com.dicoding.kulinerku.R
-import com.dicoding.kulinerku.ui.screen.login.Login
+import com.dicoding.kulinerku.ui.screen.welcome.WelcomeScreen
+import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -27,7 +30,7 @@ fun SplashScreen(
     )
 
     LaunchedEffect(true) {
-        delay(3000)
+        delay(2000)
         onTimeout()
     }
 }
@@ -37,7 +40,7 @@ fun MyAppWithSplash() {
     var showTimeOutScreen by remember { mutableStateOf(false) }
 
     if (showTimeOutScreen) {
-        Login()
+        WelcomeScreen()
     } else {
         SplashScreen(
             modifier = Modifier.fillMaxSize(),
@@ -46,5 +49,13 @@ fun MyAppWithSplash() {
                 showTimeOutScreen = true
             }
         )
+    }
+}
+
+@Preview(device = Devices.PIXEL_4, showBackground = true)
+@Composable
+fun SplashScreenView() {
+    KulinerkuTheme {
+        SplashScreen(onTimeout = { })
     }
 }

@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Login(
+fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
-    Text(text = "Halaman Login", modifier = modifier)
+    Text(text = "Halaman Login")
 }
