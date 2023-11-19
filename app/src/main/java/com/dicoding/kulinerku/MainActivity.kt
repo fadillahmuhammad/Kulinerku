@@ -7,20 +7,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.dicoding.kulinerku.ui.screen.splash.SplashScreen
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.dicoding.kulinerku.ui.screen.splash.MyAppWithSplash
 import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             KulinerkuTheme {
-                // A surface container using the 'background' color from the theme
+                navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SplashScreen()
+                    MyAppWithSplash()
                 }
             }
         }
