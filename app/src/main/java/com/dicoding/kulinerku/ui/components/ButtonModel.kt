@@ -35,10 +35,10 @@ fun ButtonModel(
         onClick = onClick,
         enabled = enabled,
         colors = colors,
+        shape = RoundedCornerShape(10.dp),
         modifier = modifier
             .fillMaxWidth()
             .height(49.dp)
-            .clip(shape = RoundedCornerShape(5.dp))
             .semantics(mergeDescendants = true) {
                 contentDescription = contentDesc
             }

@@ -6,4 +6,23 @@
     <string name="register">Register</string>
     <string name="button_login">Button Login</string>
     <string name="button_register">Button Register</string>
+    <string name="back">Back</string>
+    <string name="sign_in">Let\'s Sign In</string>
+    <string name="sign_in_image">Sign In Image</string>
+    <string name="sign_up_image">Sign Up Image</string>
+    <string name="email">Email</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="password">Password</string>
+    <string name="btn_login">Button Login</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="sign_up">Create Account</string>
+    <string name="login_text">Have not an account yet?</string>
+    <string name="text_click_register">" Register"</string>
+    <string name="username">Username</string>
+    <string name="enter_your_username">Enter your username</string>
+    <string name="Register_text">Already have an account?</string>
+    <string name="text_click_login">" Login"</string>
+    <string name="btn_register">Button Register</string>
+    <string name="hide_password">Hide Password</string>
+    <string name="show_password">Show Password</string>
 </resources>

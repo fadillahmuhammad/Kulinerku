@@ -14,6 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.dicoding.kulinerku.R
+import com.dicoding.kulinerku.ui.screen.login.LoginScreen
+import com.dicoding.kulinerku.ui.screen.login.RegisterScreen
 import com.dicoding.kulinerku.ui.screen.welcome.WelcomeScreen
 import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 import kotlinx.coroutines.delay
@@ -40,7 +42,7 @@ fun MyAppWithSplash() {
     var showTimeOutScreen by remember { mutableStateOf(false) }
 
     if (showTimeOutScreen) {
-        WelcomeScreen()
+        LoginScreen(onBackClick = {})
     } else {
         SplashScreen(
             modifier = Modifier.fillMaxSize(),

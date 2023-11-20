@@ -28,7 +28,7 @@ import com.dicoding.kulinerku.ui.theme.fontFamily
 
 @Composable
 fun WelcomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(vertical = 40.dp, horizontal = 40.dp),
