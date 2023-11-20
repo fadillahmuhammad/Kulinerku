@@ -1,4 +1,4 @@
-package com.dicoding.kulinerku.ui.screen.login
+package com.dicoding.kulinerku.ui.screen.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

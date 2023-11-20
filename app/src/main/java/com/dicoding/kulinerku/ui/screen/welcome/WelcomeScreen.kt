@@ -29,6 +29,8 @@ import com.dicoding.kulinerku.ui.theme.fontFamily
 @Composable
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
+    navigateToLogin: () -> Unit,
+    navigateToRegister: () -> Unit,
 ) {
     Column(
         modifier = modifier.padding(vertical = 40.dp, horizontal = 40.dp),
@@ -64,7 +66,7 @@ fun WelcomeScreen(
                 containerColor = colorScheme.primary,
                 contentColor = Color.White
             ),
-            onClick = {}
+            onClick = { navigateToLogin() }
         )
         Spacer(modifier = Modifier.height(16.dp))
         ButtonModel(
@@ -74,7 +76,7 @@ fun WelcomeScreen(
                 containerColor = colorScheme.primaryContainer,
                 contentColor = colorScheme.primary
             ),
-            onClick = {}
+            onClick = { navigateToRegister() }
         )
     }
 }
@@ -83,6 +85,9 @@ fun WelcomeScreen(
 @Composable
 fun WelcomeScreenPreview() {
     KulinerkuTheme {
-        WelcomeScreen()
+        WelcomeScreen(
+            navigateToLogin = {},
+            navigateToRegister = {}
+        )
     }
 }
