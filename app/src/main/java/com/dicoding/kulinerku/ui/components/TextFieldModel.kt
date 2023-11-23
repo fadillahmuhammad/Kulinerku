@@ -1,11 +1,10 @@
 package com.dicoding.kulinerku.ui.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,8 +20,6 @@ import androidx.compose.ui.unit.sp
 import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 import com.dicoding.kulinerku.ui.theme.fontFamily
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldModel(
     modifier: Modifier = Modifier,
@@ -40,19 +37,20 @@ fun TextFieldModel(
             )
         },
         modifier = modifier,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(30.dp),
         textStyle = TextStyle(
             fontSize = 16.sp,
             fontFamily = fontFamily,
             fontWeight = FontWeight.Normal,
         ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = Color.White,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
+            disabledContainerColor = Color.White,
             cursorColor = Color.Black,
-            textColor = Color.Black,
             focusedBorderColor = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = Color.Black,
-            disabledBorderColor = Color.Black
+            disabledBorderColor = Color.Black,
         )
     )
 }

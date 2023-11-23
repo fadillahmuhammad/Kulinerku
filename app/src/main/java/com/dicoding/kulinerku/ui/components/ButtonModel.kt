@@ -34,7 +34,7 @@ fun ButtonModel(
         onClick = onClick,
         enabled = enabled,
         colors = colors,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(30.dp),
         modifier = modifier
             .fillMaxWidth()
             .height(49.dp)

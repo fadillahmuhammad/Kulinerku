@@ -73,7 +73,7 @@ fun LoginScreen(
             fontSize = 16.sp
         )
         TextFieldModel(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.enter_your_email),
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -84,7 +84,7 @@ fun LoginScreen(
             fontSize = 16.sp
         )
         TextFieldPasswordModel(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.enter_your_password),
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -99,7 +99,7 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(
-            modifier = modifier.align(Alignment.End),
+            modifier = Modifier.align(Alignment.End),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(

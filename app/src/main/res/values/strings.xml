@@ -25,4 +25,13 @@
     <string name="btn_register">Button Register</string>
     <string name="hide_password">Hide Password</string>
     <string name="show_password">Show Password</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_notification">Notification</string>
+    <string name="menu_profile">Profile</string>
+    <string name="placeholder_search">Search for the restaurant..</string>
+    <string name="banner_image">Banner Image</string>
+    <string name="section_popular_place">Popular Place</string>
+    <string name="section_restaurant_recomendation">Resto Recomendation</string>
+    <string name="see_all">See all</string>
 </resources>

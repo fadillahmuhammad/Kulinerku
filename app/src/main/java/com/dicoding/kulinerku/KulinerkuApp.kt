@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dicoding.kulinerku.ui.navigation.Screen
-import com.dicoding.kulinerku.ui.screen.home.HomeScreen
 import com.dicoding.kulinerku.ui.screen.login.LoginScreen
 import com.dicoding.kulinerku.ui.screen.register.RegisterScreen
 import com.dicoding.kulinerku.ui.screen.splash.SplashScreen
@@ -42,8 +41,8 @@ fun KulinerkuApp(
                 }
             )
         }
-        composable(Screen.Home.route) {
-            HomeScreen()
+        composable(Screen.Main.route) {
+            MainScreen()
         }
         composable(Screen.Login.route) {
             LoginScreen(
@@ -64,9 +63,9 @@ fun KulinerkuApp(
 
 private fun navigateToNextScreen(navController: NavHostController) {
     if (isUserLoggedIn()) {
-        navController.navigate(Screen.Welcome.route)
+        navController.navigate(Screen.Main.route)
     } else {
-        navController.navigate(Screen.Home.route)
+        navController.navigate(Screen.Welcome.route)
     }
 }
 
