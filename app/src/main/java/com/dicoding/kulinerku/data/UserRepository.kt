@@ -1,7 +1,7 @@
 package com.dicoding.kulinerku.data
 
 import android.util.Log
-import androidx.lifecycle.liveData
+import com.dicoding.kulinerku.data.local.pref.RegisterModel
 import com.dicoding.kulinerku.data.local.pref.UserModel
 import com.dicoding.kulinerku.data.local.pref.UserPreference
 import com.dicoding.kulinerku.data.remote.response.LoginResponse
@@ -55,23 +55,38 @@ class UserRepository(
         )
     }
 
-    fun registerUser(
+    suspend fun registerUser(
         firtname: String,
         lastname: String,
         email: String,
-        phonenumber: String,
+        phoneNumber: String,
         password: String
-    ) = liveData {
-        emit(ResultState.Loading)
-        try {
+    ): ResultState<RegisterModel> {
+        return try {
             val successResponse =
-                apiService.register(firtname, lastname, email, phonenumber, password)
-            emit(ResultState.Success(successResponse))
+                apiService.register(firtname, lastname, email, phoneNumber, password)
+            Log.d("UserRepository", "Login API response: $successResponse")
+            val registerModel = convertToRegisterModel(successResponse)
+            ResultState.Success(registerModel)
         } catch (e: HttpException) {
+            Log.e("UserRepository", "Http error: ${e.message}")
             val errorBody = e.response()?.errorBody()?.string()
+            Log.e("UserRepository", "Error Body: $errorBody")
             val errorResponse = Gson().fromJson(errorBody, RegisterResponse::class.java)
-            emit(ResultState.Error(errorResponse.message.toString()))
+            Log.e("UserRepository", "Error Response: $errorResponse")
+            ResultState.Error(errorResponse.message ?: "An error occurred")
+        } catch (e: Exception) {
+            Log.e("UserRepository", "Exception: ${e.message}")
+            ResultState.Error(e.message ?: "An error occurred")
         }
+    }
+
+    private fun convertToRegisterModel(response: RegisterResponse): RegisterModel {
+
+        return RegisterModel(
+            message = response.message ?: "",
+            token = response.token ?: "",
+        )
     }
 
     companion object {

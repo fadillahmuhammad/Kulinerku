@@ -79,7 +79,7 @@ fun KulinerkuApp(
                 onRegisterClick = {
                     navController.navigate(Screen.Register.route)
                 },
-                onLoginClick = {
+                onButtonLoginClick = {
                     navController.navigate(Screen.Main.route)
                 },
                 viewModel = loginViewModel
@@ -92,6 +92,9 @@ fun KulinerkuApp(
                     navController.navigateUp()
                 },
                 onLoginClick = {
+                    navController.navigate(Screen.Login.route)
+                },
+                onButtonRegisterClick = {
                     navController.navigate(Screen.Login.route)
                 },
                 viewModel = registerViewModel

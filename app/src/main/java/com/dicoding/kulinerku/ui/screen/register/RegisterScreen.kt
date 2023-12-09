@@ -15,10 +15,16 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,9 +38,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dicoding.kulinerku.R
+import com.dicoding.kulinerku.data.local.pref.RegisterModel
+import com.dicoding.kulinerku.data.local.pref.UserModel
 import com.dicoding.kulinerku.di.Injection
+import com.dicoding.kulinerku.ui.common.ResultState
 import com.dicoding.kulinerku.ui.components.ButtonModel
+import com.dicoding.kulinerku.ui.components.TextFieldEmailModel
 import com.dicoding.kulinerku.ui.components.TextFieldModel
+import com.dicoding.kulinerku.ui.components.TextFieldNumberModel
 import com.dicoding.kulinerku.ui.components.TextFieldPasswordModel
 import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 import com.dicoding.kulinerku.ui.theme.fontFamily
@@ -44,9 +55,22 @@ fun RegisterScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onLoginClick: () -> Unit,
+    onButtonRegisterClick: () -> Unit,
     viewModel: RegisterViewModel
 ) {
+    var isLoading by remember { mutableStateOf(false) }
+    val registerResult: ResultState<RegisterModel> by viewModel.registerResult.collectAsState()
     val listState = rememberLazyListState()
+    val isFirstnameEmpty = viewModel.email.value.isEmpty()
+    val isPhonenumberEmpty = viewModel.email.value.isEmpty()
+    val isEmailEmpty = viewModel.email.value.isEmpty()
+    val isPasswordEmpty = viewModel.password.value.isEmpty()
+    val isEmailError =
+        viewModel.email.value.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(viewModel.email.value)
+            .matches()
+    val isPasswordError =
+        viewModel.password.value.isNotEmpty() && viewModel.password.value.length < 8
+
     LazyColumn(
         state = listState,
         modifier = modifier,
@@ -78,12 +102,6 @@ fun RegisterScreen(
                         .align(alignment = Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = stringResource(R.string.firstname),
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
-                )
                 TextFieldModel(
                     modifier = Modifier.fillMaxWidth(),
                     label = stringResource(R.string.enter_your_firstname),
@@ -91,12 +109,6 @@ fun RegisterScreen(
                     onValueChange = { viewModel.setFirstname(it) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.lastname),
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
-                )
                 TextFieldModel(
                     modifier = Modifier.fillMaxWidth(),
                     label = stringResource(R.string.enter_your_lastname),
@@ -104,45 +116,27 @@ fun RegisterScreen(
                     onValueChange = { viewModel.setLastname(it) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.phonenumber),
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
-                )
-                TextFieldModel(
+                TextFieldNumberModel(
                     modifier = Modifier.fillMaxWidth(),
                     label = stringResource(R.string.enter_your_phonenumber),
                     value = viewModel.phonenumber.value,
                     onValueChange = { viewModel.setPhonenumber(it) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.email),
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
-                )
-                TextFieldModel(
+                TextFieldEmailModel(
                     modifier = Modifier.fillMaxWidth(),
                     label = stringResource(R.string.enter_your_email),
                     value = viewModel.email.value,
                     onValueChange = { viewModel.setEmail(it) }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.password),
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
-                )
+                Spacer(modifier = Modifier.height(8.dp))
                 TextFieldPasswordModel(
                     modifier = Modifier.fillMaxWidth(),
                     label = stringResource(R.string.enter_your_password),
                     value = viewModel.password.value,
                     onValueChange = { viewModel.setPassword(it) }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(22.dp))
                 ButtonModel(
                     text = stringResource(R.string.register),
                     contentDesc = stringResource(R.string.btn_register),
@@ -150,9 +144,33 @@ fun RegisterScreen(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = Color.White
                     ),
-                    onClick = {}
+                    onClick = {
+                        isLoading = true
+                        viewModel.registerUser(viewModel.firtname.value, viewModel.lastname.value, viewModel.email.value, viewModel.phonenumber.value, viewModel.password.value)
+                    },
+                    enabled = !isFirstnameEmpty && !isPhonenumberEmpty && !isEmailEmpty && !isPasswordEmpty && !isEmailError && !isPasswordError
                 )
                 Spacer(modifier = Modifier.height(14.dp))
+                if (isLoading && registerResult is ResultState.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(Alignment.CenterHorizontally),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                } else {
+                    when (registerResult) {
+                        is ResultState.Success -> {
+                            onButtonRegisterClick()
+                        }
+
+                        is ResultState.Error -> {
+
+                        }
+
+                        else -> {}
+                    }
+                }
                 Row(
                     modifier = Modifier.align(Alignment.End),
                     verticalAlignment = Alignment.CenterVertically
@@ -188,6 +206,7 @@ fun RegisterScreenPreview() {
         RegisterScreen(
             onBackClick = {},
             onLoginClick = {},
+            onButtonRegisterClick = {},
             viewModel = RegisterViewModel(
                 userRepository
             )

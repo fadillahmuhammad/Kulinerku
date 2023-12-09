@@ -41,7 +41,7 @@ import com.dicoding.kulinerku.data.local.pref.UserModel
 import com.dicoding.kulinerku.di.Injection
 import com.dicoding.kulinerku.ui.common.ResultState
 import com.dicoding.kulinerku.ui.components.ButtonModel
-import com.dicoding.kulinerku.ui.components.TextFieldModel
+import com.dicoding.kulinerku.ui.components.TextFieldEmailModel
 import com.dicoding.kulinerku.ui.components.TextFieldPasswordModel
 import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 import com.dicoding.kulinerku.ui.theme.fontFamily
@@ -51,11 +51,19 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onRegisterClick: () -> Unit,
-    onLoginClick: () -> Unit,
+    onButtonLoginClick: () -> Unit,
     viewModel: LoginViewModel = viewModel()
 ) {
     var isLoading by remember { mutableStateOf(false) }
     val loginResult: ResultState<UserModel> by viewModel.loginResult.collectAsState()
+    val isEmailEmpty = viewModel.email.value.isEmpty()
+    val isPasswordEmpty = viewModel.password.value.isEmpty()
+    val isEmailError =
+        viewModel.email.value.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(viewModel.email.value)
+            .matches()
+    val isPasswordError =
+        viewModel.password.value.isNotEmpty() && viewModel.password.value.length < 8
+
 
     Column(
         modifier = modifier.padding(24.dp)
@@ -82,32 +90,20 @@ fun LoginScreen(
                 .align(alignment = Alignment.CenterHorizontally)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.email),
-            fontFamily = fontFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 16.sp
-        )
-        TextFieldModel(
+        TextFieldEmailModel(
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.enter_your_email),
             value = viewModel.email.value,
             onValueChange = { viewModel.setEmail(it) }
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = stringResource(R.string.password),
-            fontFamily = fontFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 16.sp
-        )
+        Spacer(modifier = Modifier.height(8.dp))
         TextFieldPasswordModel(
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.enter_your_password),
             value = viewModel.password.value,
             onValueChange = { viewModel.setPassword(it) }
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(22.dp))
         ButtonModel(
             text = stringResource(R.string.login),
             contentDesc = stringResource(R.string.btn_login),
@@ -118,7 +114,8 @@ fun LoginScreen(
             onClick = {
                 isLoading = true
                 viewModel.loginUser(viewModel.email.value, viewModel.password.value)
-            }
+            },
+            enabled = !isEmailEmpty && !isPasswordEmpty && !isEmailError && !isPasswordError// Button akan aktif jika keduanya tidak kosong
         )
         Spacer(modifier = Modifier.height(14.dp))
         if (isLoading && loginResult is ResultState.Loading) {
@@ -132,7 +129,7 @@ fun LoginScreen(
             when (loginResult) {
                 is ResultState.Success -> {
                     viewModel.saveSession((loginResult as ResultState.Success<UserModel>).data)
-                    onLoginClick()
+                    onButtonLoginClick()
                 }
 
                 is ResultState.Error -> {
@@ -175,7 +172,7 @@ fun LoginScreenPreview() {
         LoginScreen(
             onBackClick = {},
             onRegisterClick = {},
-            onLoginClick = {},
+            onButtonLoginClick = {},
             viewModel = LoginViewModel(
                 userRepository
             )

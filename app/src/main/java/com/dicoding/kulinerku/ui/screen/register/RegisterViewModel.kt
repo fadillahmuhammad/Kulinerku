@@ -5,7 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.kulinerku.data.UserRepository
-import com.dicoding.kulinerku.data.local.pref.UserModel
+import com.dicoding.kulinerku.data.local.pref.RegisterModel
+import com.dicoding.kulinerku.ui.common.ResultState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
@@ -23,6 +26,9 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _password = mutableStateOf("")
     val password: State<String> = _password
+
+    private val _registerResult = MutableStateFlow<ResultState<RegisterModel>>(ResultState.Loading)
+    val registerResult: StateFlow<ResultState<RegisterModel>> = _registerResult
 
     fun setEmail(email: String) {
         _email.value = email
@@ -45,17 +51,26 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
     }
 
     fun registerUser(
-        firtname: String,
+        firstname: String,
         lastname: String,
-        email: String,
         phonenumber: String,
-        password: String
-    ) =
-        repository.registerUser(firtname, lastname, email, phonenumber, password)
-
-    fun saveSession(user: UserModel) {
+        email: String,
+        password: String,
+    ) {
         viewModelScope.launch {
-            repository.saveSession(user)
+            try {
+                val result =
+                    repository.registerUser(firstname, lastname, phonenumber, email, password)
+                _registerResult.value = result
+            } catch (e: Exception) {
+                _registerResult.value = ResultState.Error(e.message ?: "An error occurred")
+            }
         }
     }
+
+//    fun saveSession(user: UserModel) {
+//        viewModelScope.launch {
+//            repository.saveSession(user)
+//        }
+//    }
 }

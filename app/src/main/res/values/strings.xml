@@ -10,16 +10,13 @@
     <string name="sign_in">Let\'s Sign In</string>
     <string name="sign_in_image">Sign In Image</string>
     <string name="sign_up_image">Sign Up Image</string>
-    <string name="email">Email</string>
-    <string name="enter_your_email">Enter your email</string>
-    <string name="password">Password</string>
+    <string name="enter_your_email">Email</string>
     <string name="btn_login">Button Login</string>
-    <string name="enter_your_password">Enter your password</string>
+    <string name="enter_your_password">Password</string>
     <string name="sign_up">Create Account</string>
     <string name="login_text">Have not an account yet?</string>
     <string name="text_click_register">" Register"</string>
-    <string name="username">Username</string>
-    <string name="enter_your_username">Enter your username</string>
+    <string name="enter_your_username">Username</string>
     <string name="Register_text">Already have an account?</string>
     <string name="text_click_login">" Login"</string>
     <string name="btn_register">Button Register</string>
@@ -35,10 +32,9 @@
     <string name="section_restaurant_recomendation">Resto Recomendation</string>
     <string name="see_all">See all</string>
     <string name="button_favorites">Button Favorites</string>
-    <string name="firstname">Firstname</string>
-    <string name="enter_your_firstname">Enter your firstname</string>
-    <string name="lastname">Lastname</string>
-    <string name="enter_your_lastname">Enter your lastname</string>
-    <string name="phonenumber">Phonenumber</string>
-    <string name="enter_your_phonenumber">Enter your phone number</string>
+    <string name="enter_your_firstname">Firstname</string>
+    <string name="enter_your_lastname">Lastname</string>
+    <string name="enter_your_phonenumber">Phone number</string>
+    <string name="email_error">Incorrect email format!</string>
+    <string name="password_error">At least 8 characters</string>
 </resources>
