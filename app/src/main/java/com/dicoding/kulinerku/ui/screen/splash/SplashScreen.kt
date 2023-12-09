@@ -23,7 +23,7 @@ fun SplashScreen(
     )
 
     LaunchedEffect(true) {
-        delay(2000)
+        delay(3000)
         onTimeout()
     }
 }

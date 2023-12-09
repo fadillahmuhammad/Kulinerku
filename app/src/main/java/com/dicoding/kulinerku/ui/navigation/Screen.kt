@@ -1,6 +1,7 @@
 package com.dicoding.kulinerku.ui.navigation
 
 sealed class Screen(val route: String) {
+    object Initial : Screen("initial")
     object Splash : Screen("splash")
     object Welcome : Screen("welcome")
     object Main : Screen("main")

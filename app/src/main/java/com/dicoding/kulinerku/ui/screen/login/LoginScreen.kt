@@ -13,10 +13,16 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +35,11 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.kulinerku.R
+import com.dicoding.kulinerku.data.local.pref.UserModel
+import com.dicoding.kulinerku.di.Injection
+import com.dicoding.kulinerku.ui.common.ResultState
 import com.dicoding.kulinerku.ui.components.ButtonModel
 import com.dicoding.kulinerku.ui.components.TextFieldModel
 import com.dicoding.kulinerku.ui.components.TextFieldPasswordModel
@@ -40,7 +50,13 @@ import com.dicoding.kulinerku.ui.theme.fontFamily
 fun LoginScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    onRegisterClick: () -> Unit,
+    onLoginClick: () -> Unit,
+    viewModel: LoginViewModel = viewModel()
 ) {
+    var isLoading by remember { mutableStateOf(false) }
+    val loginResult: ResultState<UserModel> by viewModel.loginResult.collectAsState()
+
     Column(
         modifier = modifier.padding(24.dp)
     ) {
@@ -75,6 +91,8 @@ fun LoginScreen(
         TextFieldModel(
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.enter_your_email),
+            value = viewModel.email.value,
+            onValueChange = { viewModel.setEmail(it) }
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -86,6 +104,8 @@ fun LoginScreen(
         TextFieldPasswordModel(
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.enter_your_password),
+            value = viewModel.password.value,
+            onValueChange = { viewModel.setPassword(it) }
         )
         Spacer(modifier = Modifier.height(16.dp))
         ButtonModel(
@@ -95,9 +115,33 @@ fun LoginScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = Color.White
             ),
-            onClick = {}
+            onClick = {
+                isLoading = true
+                viewModel.loginUser(viewModel.email.value, viewModel.password.value)
+            }
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(14.dp))
+        if (isLoading && loginResult is ResultState.Loading) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.CenterHorizontally),
+                color = MaterialTheme.colorScheme.primary
+            )
+        } else {
+            when (loginResult) {
+                is ResultState.Success -> {
+                    viewModel.saveSession((loginResult as ResultState.Success<UserModel>).data)
+                    onLoginClick()
+                }
+
+                is ResultState.Error -> {
+
+                }
+
+                else -> {}
+            }
+        }
         Row(
             modifier = Modifier.align(Alignment.End),
             verticalAlignment = Alignment.CenterVertically
@@ -117,7 +161,7 @@ fun LoginScreen(
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.primary
                 ),
-                onClick = { },
+                onClick = { onRegisterClick() },
             )
         }
     }
@@ -126,7 +170,15 @@ fun LoginScreen(
 @Preview(device = Devices.PIXEL_4, showBackground = true)
 @Composable
 fun LoginScreenPreview() {
+    val userRepository = Injection.provideRepository()
     KulinerkuTheme {
-        LoginScreen(onBackClick = {})
+        LoginScreen(
+            onBackClick = {},
+            onRegisterClick = {},
+            onLoginClick = {},
+            viewModel = LoginViewModel(
+                userRepository
+            )
+        )
     }
 }

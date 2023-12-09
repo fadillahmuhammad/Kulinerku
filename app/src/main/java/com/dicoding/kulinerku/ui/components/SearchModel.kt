@@ -22,7 +22,9 @@ import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Search(modifier: Modifier = Modifier) {
+fun Search(
+    modifier: Modifier = Modifier
+) {
     SearchBar(
         query = "",
         onQueryChange = {},

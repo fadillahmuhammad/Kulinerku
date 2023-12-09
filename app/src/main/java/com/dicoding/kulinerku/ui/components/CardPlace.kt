@@ -21,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +44,13 @@ fun CardPlace(
     Card(
         modifier = modifier
             .width(160.dp)
-            .height(200.dp),
+            .height(200.dp)
+            .shadow(
+                elevation = 8.dp,
+                clip = true,
+                shape = RoundedCornerShape(30.dp),
+                ambientColor = Color.Black.copy(alpha = 0.45f)
+            ),
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,

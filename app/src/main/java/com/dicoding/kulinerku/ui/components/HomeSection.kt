@@ -61,7 +61,7 @@ fun SectionText(
             fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.clickable { onTextClick }
+            modifier = Modifier.clickable { onTextClick() }
         )
     }
     Spacer(modifier = Modifier.height(8.dp))

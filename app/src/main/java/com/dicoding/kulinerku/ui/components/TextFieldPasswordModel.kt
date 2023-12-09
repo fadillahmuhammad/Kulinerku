@@ -9,11 +9,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -33,13 +30,14 @@ import com.dicoding.kulinerku.ui.theme.fontFamily
 fun TextFieldPasswordModel(
     modifier: Modifier = Modifier,
     label: String,
+    value: String,
+    onValueChange: (String) -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
     val showPassword = rememberSaveable { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = text,
-        onValueChange = { newText -> text = newText },
+        value = value,
+        onValueChange = { newText -> onValueChange(newText) },
         label = {
             Text(
                 text = label,
@@ -93,6 +91,10 @@ fun TextFieldPasswordModel(
 @Composable
 fun TextFieldPasswordModelPreview() {
     KulinerkuTheme {
-        TextFieldPasswordModel(label = "Enter your password")
+        TextFieldPasswordModel(
+            label = "Enter your password",
+            value = "",
+            onValueChange = {}
+        )
     }
 }

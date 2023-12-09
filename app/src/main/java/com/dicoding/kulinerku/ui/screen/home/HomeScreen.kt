@@ -3,9 +3,11 @@ package com.dicoding.kulinerku.ui.screen.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -21,8 +23,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dicoding.kulinerku.R
 import com.dicoding.kulinerku.model.Place
+import com.dicoding.kulinerku.model.Restaurant
 import com.dicoding.kulinerku.model.dummyPlace
+import com.dicoding.kulinerku.model.dummyRestaurant
 import com.dicoding.kulinerku.ui.components.CardPlace
+import com.dicoding.kulinerku.ui.components.CardRestaurant
 import com.dicoding.kulinerku.ui.components.HomeSection
 import com.dicoding.kulinerku.ui.components.Search
 import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
@@ -32,7 +37,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier,
+        contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         item {
             Banner()
@@ -45,7 +51,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(28.dp))
             HomeSection(
                 title = stringResource(R.string.section_restaurant_recomendation),
-                content = {},
+                content = { RestaurantColumn(dummyRestaurant) },
                 onTextClick = {}
             )
         }
@@ -89,6 +95,22 @@ fun PlaceRow(
     ) {
         items(listPlace, key = { it.name }) { place ->
             CardPlace(place)
+        }
+    }
+}
+
+@Composable
+fun RestaurantColumn(
+    listRestaurant: List<Restaurant>,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        listRestaurant.forEach { restaurant ->
+            CardRestaurant(restaurant)
         }
     }
 }

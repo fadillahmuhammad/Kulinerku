@@ -22,12 +22,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.dicoding.kulinerku.di.Injection
 import com.dicoding.kulinerku.ui.navigation.NavigationItem
 import com.dicoding.kulinerku.ui.navigation.Screen
 import com.dicoding.kulinerku.ui.screen.favorites.FavoritesScreen
 import com.dicoding.kulinerku.ui.screen.home.HomeScreen
 import com.dicoding.kulinerku.ui.screen.notifications.NotificationsScreen
 import com.dicoding.kulinerku.ui.screen.profile.ProfileScreen
+import com.dicoding.kulinerku.ui.screen.profile.ProfileViewModel
 
 @Composable
 fun MainScreen(
@@ -36,6 +38,8 @@ fun MainScreen(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val userRepository = Injection.provideRepository()
+    val profileViewModel = ProfileViewModel(userRepository)
 
     Scaffold(
         bottomBar = {
@@ -57,8 +61,16 @@ fun MainScreen(
             composable(Screen.Notifications.route) {
                 NotificationsScreen()
             }
+            composable(Screen.Initial.route) {
+                KulinerkuApp()
+            }
             composable(Screen.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(
+                    onLogoutClick = {
+                        navController.navigate(Screen.Initial.route)
+                    },
+                    viewModel = profileViewModel
+                )
             }
         }
     }
