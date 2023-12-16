@@ -43,7 +43,9 @@ fun MainScreen(
 
     Scaffold(
         bottomBar = {
-            BottomBar(navController)
+            if (currentRoute != Screen.Initial.route) {
+                BottomBar(navController)
+            }
         },
         modifier = modifier
     ) { innerPadding ->
@@ -61,9 +63,6 @@ fun MainScreen(
             composable(Screen.Notifications.route) {
                 NotificationsScreen()
             }
-            composable(Screen.Initial.route) {
-                KulinerkuApp()
-            }
             composable(Screen.Profile.route) {
                 ProfileScreen(
                     onLogoutClick = {
@@ -71,6 +70,9 @@ fun MainScreen(
                     },
                     viewModel = profileViewModel
                 )
+            }
+            composable(Screen.Initial.route) {
+                KulinerkuApp()
             }
         }
     }

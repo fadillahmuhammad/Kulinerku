@@ -2,12 +2,14 @@ package com.dicoding.kulinerku.ui.screen.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -18,8 +20,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dicoding.kulinerku.R
 import com.dicoding.kulinerku.data.local.pref.RegisterModel
-import com.dicoding.kulinerku.data.local.pref.UserModel
 import com.dicoding.kulinerku.di.Injection
 import com.dicoding.kulinerku.ui.common.ResultState
 import com.dicoding.kulinerku.ui.components.ButtonModel
@@ -49,15 +52,17 @@ import com.dicoding.kulinerku.ui.components.TextFieldNumberModel
 import com.dicoding.kulinerku.ui.components.TextFieldPasswordModel
 import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 import com.dicoding.kulinerku.ui.theme.fontFamily
+import kotlinx.coroutines.delay
 
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onLoginClick: () -> Unit,
-    onButtonRegisterClick: () -> Unit,
+    onButtonClick: () -> Unit,
     viewModel: RegisterViewModel
 ) {
+    var isShowingSuccess by remember { mutableStateOf(false) }
+    var isShowingError by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
     val registerResult: ResultState<RegisterModel> by viewModel.registerResult.collectAsState()
     val listState = rememberLazyListState()
@@ -71,129 +76,181 @@ fun RegisterScreen(
     val isPasswordError =
         viewModel.password.value.isNotEmpty() && viewModel.password.value.length < 8
 
-    LazyColumn(
-        state = listState,
-        modifier = modifier,
-        contentPadding = PaddingValues(vertical = 24.dp, horizontal = 24.dp),
-    ) {
-        item {
-            Column(
-                modifier = Modifier
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.back),
+    LaunchedEffect(isShowingSuccess, isShowingError, isLoading) {
+        if (isShowingSuccess || isShowingError || isLoading) {
+            delay(2000)
+            isLoading = false
+            isShowingSuccess = false
+            isShowingError = false
+        }
+    }
+
+    Box(modifier = modifier) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier,
+            contentPadding = PaddingValues(vertical = 24.dp, horizontal = 24.dp),
+        ) {
+            item {
+                Column(
                     modifier = Modifier
-                        .clickable { onBackClick() }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = stringResource(R.string.sign_up),
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.sing_up_img),
-                    contentDescription = stringResource(R.string.sign_up_image),
-                    modifier = Modifier
-                        .size(250.dp)
-                        .align(alignment = Alignment.CenterHorizontally)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextFieldModel(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = stringResource(R.string.enter_your_firstname),
-                    value = viewModel.firtname.value,
-                    onValueChange = { viewModel.setFirstname(it) }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                TextFieldModel(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = stringResource(R.string.enter_your_lastname),
-                    value = viewModel.lastname.value,
-                    onValueChange = { viewModel.setLastname(it) }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                TextFieldNumberModel(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = stringResource(R.string.enter_your_phonenumber),
-                    value = viewModel.phonenumber.value,
-                    onValueChange = { viewModel.setPhonenumber(it) }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                TextFieldEmailModel(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = stringResource(R.string.enter_your_email),
-                    value = viewModel.email.value,
-                    onValueChange = { viewModel.setEmail(it) }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextFieldPasswordModel(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = stringResource(R.string.enter_your_password),
-                    value = viewModel.password.value,
-                    onValueChange = { viewModel.setPassword(it) }
-                )
-                Spacer(modifier = Modifier.height(22.dp))
-                ButtonModel(
-                    text = stringResource(R.string.register),
-                    contentDesc = stringResource(R.string.btn_register),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White
-                    ),
-                    onClick = {
-                        isLoading = true
-                        viewModel.registerUser(viewModel.firtname.value, viewModel.lastname.value, viewModel.email.value, viewModel.phonenumber.value, viewModel.password.value)
-                    },
-                    enabled = !isFirstnameEmpty && !isPhonenumberEmpty && !isEmailEmpty && !isPasswordEmpty && !isEmailError && !isPasswordError
-                )
-                Spacer(modifier = Modifier.height(14.dp))
-                if (isLoading && registerResult is ResultState.Loading) {
-                    CircularProgressIndicator(
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = stringResource(R.string.back),
                         modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colorScheme.primary
+                            .clickable { onBackClick() }
                     )
-                } else {
-                    when (registerResult) {
-                        is ResultState.Success -> {
-                            onButtonRegisterClick()
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.sign_up),
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.sing_up_img),
+                        contentDescription = stringResource(R.string.sign_up_image),
+                        modifier = Modifier
+                            .size(250.dp)
+                            .align(alignment = Alignment.CenterHorizontally)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextFieldModel(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = stringResource(R.string.enter_your_firstname),
+                        value = viewModel.firtname.value,
+                        onValueChange = { viewModel.setFirstname(it) }
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    TextFieldModel(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = stringResource(R.string.enter_your_lastname),
+                        value = viewModel.lastname.value,
+                        onValueChange = { viewModel.setLastname(it) }
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    TextFieldNumberModel(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = stringResource(R.string.enter_your_phonenumber),
+                        value = viewModel.phonenumber.value,
+                        onValueChange = { viewModel.setPhonenumber(it) }
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    TextFieldEmailModel(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = stringResource(R.string.enter_your_email),
+                        value = viewModel.email.value,
+                        onValueChange = { viewModel.setEmail(it) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextFieldPasswordModel(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = stringResource(R.string.enter_your_password),
+                        value = viewModel.password.value,
+                        onValueChange = { viewModel.setPassword(it) }
+                    )
+                    Spacer(modifier = Modifier.height(22.dp))
+                    ButtonModel(
+                        text = stringResource(R.string.register),
+                        contentDesc = stringResource(R.string.btn_register),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+                            isLoading = true
+                            viewModel.registerUser(
+                                viewModel.firtname.value,
+                                viewModel.lastname.value,
+                                viewModel.email.value,
+                                viewModel.phonenumber.value,
+                                viewModel.password.value
+                            )
+                        },
+                        enabled = !isFirstnameEmpty && !isPhonenumberEmpty && !isEmailEmpty && !isPasswordEmpty && !isEmailError && !isPasswordError
+                    )
+                    Spacer(modifier = Modifier.height(14.dp))
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .align(Alignment.CenterHorizontally),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    } else {
+                        LaunchedEffect(registerResult) {
+                            when (registerResult) {
+                                is ResultState.Success -> {
+                                    isShowingSuccess = true
+                                    delay(2000)
+                                    isShowingSuccess = false
+                                    onButtonClick()
+                                }
+
+                                is ResultState.Error -> {
+                                    isShowingError = true
+                                    delay(4000)
+                                    isShowingError = false
+                                }
+
+                                else -> {}
+                            }
                         }
-
+                    }
+                    Row(
+                        modifier = Modifier.align(Alignment.End),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.Register_text),
+                            fontFamily = fontFamily,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 14.sp
+                        )
+                        ClickableText(
+                            text = AnnotatedString(stringResource(R.string.text_click_login)),
+                            modifier = Modifier.clickable {},
+                            style = TextStyle(
+                                fontFamily = fontFamily,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.primary
+                            ),
+                            onClick = { onButtonClick() },
+                        )
+                    }
+                }
+            }
+        }
+        if (isShowingSuccess) {
+            Snackbar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                containerColor = MaterialTheme.colorScheme.primary,
+                content = {
+                    Text(text = stringResource(R.string.register_success_notif))
+                }
+            )
+        } else if (isShowingError) {
+            Snackbar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                containerColor = MaterialTheme.colorScheme.error,
+                content = {
+                    when (val failedResult = registerResult) {
                         is ResultState.Error -> {
-
+                            val message = failedResult.errorMessage
+                            Text(text = message)
                         }
 
                         else -> {}
                     }
                 }
-                Row(
-                    modifier = Modifier.align(Alignment.End),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.Register_text),
-                        fontFamily = fontFamily,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 14.sp
-                    )
-                    ClickableText(
-                        text = AnnotatedString(stringResource(R.string.text_click_login)),
-                        modifier = Modifier.clickable {},
-                        style = TextStyle(
-                            fontFamily = fontFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 14.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        ),
-                        onClick = { onLoginClick() },
-                    )
-                }
-            }
+            )
         }
     }
 }
@@ -205,8 +262,7 @@ fun RegisterScreenPreview() {
     KulinerkuTheme {
         RegisterScreen(
             onBackClick = {},
-            onLoginClick = {},
-            onButtonRegisterClick = {},
+            onButtonClick = {},
             viewModel = RegisterViewModel(
                 userRepository
             )

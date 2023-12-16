@@ -37,4 +37,6 @@
     <string name="enter_your_phonenumber">Phone number</string>
     <string name="email_error">Incorrect email format!</string>
     <string name="password_error">At least 8 characters</string>
+    <string name="register_success_notif">Register success, redirect to login</string>
+    <string name="login_success_notif">Login success. Welcome!</string>
 </resources>

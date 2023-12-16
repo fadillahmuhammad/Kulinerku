@@ -1,6 +1,5 @@
 package com.dicoding.kulinerku.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +34,8 @@ fun TextFieldEmailModel(
     value: String,
     onValueChange: (String) -> Unit
 ) {
-    val isError = value.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches()
+    val isError =
+        value.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches()
 
     Column(
         modifier = modifier,

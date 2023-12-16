@@ -17,8 +17,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Kulinerku">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Kulinerku"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

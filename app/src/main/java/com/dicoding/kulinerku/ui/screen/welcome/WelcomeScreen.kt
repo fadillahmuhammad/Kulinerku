@@ -1,5 +1,9 @@
 package com.dicoding.kulinerku.ui.screen.welcome
 
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +37,11 @@ fun WelcomeScreen(
     navigateToLogin: () -> Unit,
     navigateToRegister: () -> Unit,
 ) {
+    val context = LocalContext.current
+    BackHandler {
+        context.findActivity()?.finish()
+    }
+
     Column(
         modifier = modifier.padding(vertical = 40.dp, horizontal = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -81,13 +91,19 @@ fun WelcomeScreen(
     }
 }
 
+fun Context.findActivity(): ComponentActivity? = when (this) {
+    is ComponentActivity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
 @Preview(device = Devices.PIXEL_4, showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
     KulinerkuTheme {
         WelcomeScreen(
             navigateToLogin = {},
-            navigateToRegister = {}
+            navigateToRegister = {},
         )
     }
 }

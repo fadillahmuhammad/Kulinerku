@@ -32,7 +32,6 @@ fun KulinerkuApp(
     navController: NavHostController = rememberNavController()
 ) {
     val userRepository = Injection.provideRepository()
-    val loginViewModel = LoginViewModel(userRepository)
     val context = LocalContext.current
     val userPreference = remember { UserPreference.getInstance(context.dataStore) }
     var isLoggedIn by remember { mutableStateOf(false) }
@@ -61,23 +60,42 @@ fun KulinerkuApp(
         composable(Screen.Welcome.route) {
             WelcomeScreen(
                 navigateToRegister = {
-                    navController.navigate(Screen.Register.route)
+                    navController.navigate(Screen.Register.route) {
+                        popUpTo(Screen.Welcome.route) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
                 },
                 navigateToLogin = {
-                    navController.navigate(Screen.Login.route)
-                }
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Welcome.route) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                },
             )
         }
         composable(Screen.Main.route) {
             MainScreen()
         }
         composable(Screen.Login.route) {
+            val loginViewModel = LoginViewModel(userRepository)
             LoginScreen(
                 onBackClick = {
                     navController.navigateUp()
                 },
                 onRegisterClick = {
-                    navController.navigate(Screen.Register.route)
+                    navController.navigate(Screen.Register.route) {
+                        popUpTo(Screen.Welcome.route) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
                 },
                 onButtonLoginClick = {
                     navController.navigate(Screen.Main.route)
@@ -91,11 +109,14 @@ fun KulinerkuApp(
                 onBackClick = {
                     navController.navigateUp()
                 },
-                onLoginClick = {
-                    navController.navigate(Screen.Login.route)
-                },
-                onButtonRegisterClick = {
-                    navController.navigate(Screen.Login.route)
+                onButtonClick = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Welcome.route) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
                 },
                 viewModel = registerViewModel
             )
