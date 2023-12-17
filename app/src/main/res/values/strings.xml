@@ -39,4 +39,18 @@
     <string name="password_error">At least 8 characters</string>
     <string name="register_success_notif">Register success, redirect to login</string>
     <string name="login_success_notif">Login success. Welcome!</string>
+    <string name="logout">Logout</string>
+    <string name="btn_logout">Button Logout</string>
+    <string name="profile">Your Profile</string>
+    <string name="go_to_arrow">Go to arrow</string>
+    <string name="cuisine_pref_ic">Cuisine Preference Icon</string>
+    <string name="cuisine_preferences">Cuisine Preferences</string>
+    <string name="location_ic">Location Icon</string>
+    <string name="location">Location</string>
+    <string name="favorites_ic">Favorites Icon</string>
+    <string name="about_ic">About Icon</string>
+    <string name="about_kulinerku">About Kulinerku</string>
+    <string name="language_ic">Language Icon</string>
+    <string name="language">Language</string>
+    <string name="logout_icon">Logout Icon</string>
 </resources>

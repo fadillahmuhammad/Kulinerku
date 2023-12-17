@@ -16,6 +16,9 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
 
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
+            preferences[FIRSTNAME_KEY] = user.firstname
+            preferences[LASTNAME_KEY] = user.lastname
+            preferences[PHONENUMBER_KEY] = user.phonenumber
             preferences[EMAIL_KEY] = user.email
             preferences[TOKEN_KEY] = user.token
             preferences[IS_LOGIN_KEY] = true
@@ -26,6 +29,9 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
         return dataStore.data.map { preferences ->
             UserModel(
                 preferences[MESSAGE_KEY] ?: "",
+                preferences[FIRSTNAME_KEY] ?: "",
+                preferences[LASTNAME_KEY] ?: "",
+                preferences[PHONENUMBER_KEY] ?: "",
                 preferences[EMAIL_KEY] ?: "",
                 preferences[TOKEN_KEY] ?: "",
                 preferences[IS_LOGIN_KEY] ?: false
@@ -44,6 +50,9 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
         private var INSTANCE: UserPreference? = null
 
         private val MESSAGE_KEY = stringPreferencesKey("message")
+        private val FIRSTNAME_KEY = stringPreferencesKey("firstname")
+        private val LASTNAME_KEY = stringPreferencesKey("lastname")
+        private val PHONENUMBER_KEY = stringPreferencesKey("phonenumber")
         private val EMAIL_KEY = stringPreferencesKey("email")
         private val TOKEN_KEY = stringPreferencesKey("token")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")

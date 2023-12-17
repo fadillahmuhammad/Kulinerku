@@ -8,6 +8,7 @@ import com.dicoding.kulinerku.data.remote.response.LoginResponse
 import com.dicoding.kulinerku.data.remote.response.RegisterResponse
 import com.dicoding.kulinerku.data.remote.retrofit.ApiService
 import com.dicoding.kulinerku.ui.common.ResultState
+import kotlinx.coroutines.flow.firstOrNull
 import retrofit2.HttpException
 
 class UserRepository(
@@ -55,7 +56,10 @@ class UserRepository(
 
         return UserModel(
             message = response.message ?: "",
+            firstname = user.firstname ?: "",
             email = user.email ?: "",
+            phonenumber = user.phonenumber ?: "",
+            lastname = user.lastname ?: "",
             token = response.token ?: "",
             isLogin = true
         )
@@ -96,6 +100,10 @@ class UserRepository(
             message = response.message ?: "",
             token = response.token ?: "",
         )
+    }
+
+    suspend fun getUserSession(): UserModel? {
+        return userPreference.getSession().firstOrNull()
     }
 
     companion object {

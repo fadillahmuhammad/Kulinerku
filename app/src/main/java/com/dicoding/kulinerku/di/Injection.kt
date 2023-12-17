@@ -1,4 +1,3 @@
-// Injection.kt
 package com.dicoding.kulinerku.di
 
 import android.content.Context

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -23,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dicoding.kulinerku.di.Injection
+import com.dicoding.kulinerku.ui.ViewModelFactory
 import com.dicoding.kulinerku.ui.navigation.NavigationItem
 import com.dicoding.kulinerku.ui.navigation.Screen
 import com.dicoding.kulinerku.ui.screen.favorites.FavoritesScreen
@@ -39,7 +41,9 @@ fun MainScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val userRepository = Injection.provideRepository()
-    val profileViewModel = ProfileViewModel(userRepository)
+    val profileViewModel = viewModel<ProfileViewModel>(
+        factory = ViewModelFactory(userRepository)
+    )
 
     Scaffold(
         bottomBar = {
@@ -68,7 +72,7 @@ fun MainScreen(
                     onLogoutClick = {
                         navController.navigate(Screen.Initial.route)
                     },
-                    viewModel = profileViewModel
+                    viewModel = profileViewModel,
                 )
             }
             composable(Screen.Initial.route) {
