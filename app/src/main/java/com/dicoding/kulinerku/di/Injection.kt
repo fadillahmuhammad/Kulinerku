@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.dicoding.kulinerku.data.UserRepository
 import com.dicoding.kulinerku.data.local.pref.UserPreference
 import com.dicoding.kulinerku.data.local.pref.dataStore
+import com.dicoding.kulinerku.data.local.room.RestaurantDatabase
 import com.dicoding.kulinerku.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -27,6 +28,8 @@ class Injection private constructor(private val context: Context) {
     fun provideRepository(): UserRepository {
         val user = runBlocking { pref.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token)
-        return UserRepository.getInstance(pref, apiService)
+        val database = RestaurantDatabase.getDatabase(context)
+        val restaurantDao = database.restaurantDao()
+        return UserRepository.getInstance(pref, apiService, restaurantDao)
     }
 }

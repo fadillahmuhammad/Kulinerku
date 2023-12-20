@@ -1,9 +1,11 @@
 package com.dicoding.kulinerku.data
 
 import android.util.Log
+import com.dicoding.kulinerku.data.local.entity.RestaurantEntity
 import com.dicoding.kulinerku.data.local.pref.RegisterModel
 import com.dicoding.kulinerku.data.local.pref.UserModel
 import com.dicoding.kulinerku.data.local.pref.UserPreference
+import com.dicoding.kulinerku.data.local.room.RestaurantDao
 import com.dicoding.kulinerku.data.remote.response.LoginResponse
 import com.dicoding.kulinerku.data.remote.response.RegisterResponse
 import com.dicoding.kulinerku.data.remote.retrofit.ApiService
@@ -13,7 +15,8 @@ import retrofit2.HttpException
 
 class UserRepository(
     private val userPreference: UserPreference,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val restaurantDao: RestaurantDao
 ) {
     private val TAG: String = "UserRepository"
 
@@ -48,7 +51,6 @@ class UserRepository(
             ResultState.Error(e.message ?: "An error occurred")
         }
     }
-
 
     private fun convertToUserModel(response: LoginResponse): UserModel {
         val user = response.user
@@ -106,15 +108,37 @@ class UserRepository(
         return userPreference.getSession().firstOrNull()
     }
 
+    suspend fun insertFavorite(restaurant: RestaurantEntity) {
+        restaurantDao.insert(restaurant)
+    }
+
+    suspend fun deleteFavorite(restaurant: RestaurantEntity) {
+        restaurantDao.delete(restaurant)
+    }
+
+    suspend fun getAllFavorites(): List<RestaurantEntity> {
+        return restaurantDao.getAllRestaurants()
+    }
+
+    suspend fun getRestaurantByName(name: String): RestaurantEntity {
+        return restaurantDao.getRestaurantByName(name)
+    }
+
+    suspend fun isFavorite(restaurant: RestaurantEntity): Boolean {
+        val favorites = getAllFavorites()
+        return favorites.any { it.name == restaurant.name }
+    }
+
     companion object {
         @Volatile
         private var instance: UserRepository? = null
         fun getInstance(
             userPreference: UserPreference,
-            apiService: ApiService
+            apiService: ApiService,
+            restaurantDao: RestaurantDao
         ): UserRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(userPreference, apiService)
+                instance ?: UserRepository(userPreference, apiService, restaurantDao)
             }.also { instance = it }
     }
 }

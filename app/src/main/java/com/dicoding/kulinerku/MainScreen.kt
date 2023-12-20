@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -29,7 +28,7 @@ import com.dicoding.kulinerku.ui.navigation.NavigationItem
 import com.dicoding.kulinerku.ui.navigation.Screen
 import com.dicoding.kulinerku.ui.screen.favorites.FavoritesScreen
 import com.dicoding.kulinerku.ui.screen.home.HomeScreen
-import com.dicoding.kulinerku.ui.screen.notifications.NotificationsScreen
+import com.dicoding.kulinerku.ui.screen.home.HomeViewModel
 import com.dicoding.kulinerku.ui.screen.profile.ProfileScreen
 import com.dicoding.kulinerku.ui.screen.profile.ProfileViewModel
 
@@ -42,6 +41,9 @@ fun MainScreen(
     val currentRoute = navBackStackEntry?.destination?.route
     val userRepository = Injection.provideRepository()
     val profileViewModel = viewModel<ProfileViewModel>(
+        factory = ViewModelFactory(userRepository)
+    )
+    val homeViewModel = viewModel<HomeViewModel>(
         factory = ViewModelFactory(userRepository)
     )
 
@@ -59,13 +61,14 @@ fun MainScreen(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
-                HomeScreen()
+                HomeScreen(
+                    viewModel = homeViewModel
+                )
             }
             composable(Screen.Favorites.route) {
-                FavoritesScreen()
-            }
-            composable(Screen.Notifications.route) {
-                NotificationsScreen()
+                FavoritesScreen(
+                    viewModel = homeViewModel
+                )
             }
             composable(Screen.Profile.route) {
                 ProfileScreen(
@@ -104,11 +107,6 @@ private fun BottomBar(
                 title = stringResource(R.string.menu_favorites),
                 icon = Icons.Default.Favorite,
                 screen = Screen.Favorites
-            ),
-            NavigationItem(
-                title = stringResource(R.string.menu_notification),
-                icon = Icons.Default.Notifications,
-                screen = Screen.Notifications
             ),
             NavigationItem(
                 title = stringResource(R.string.menu_profile),

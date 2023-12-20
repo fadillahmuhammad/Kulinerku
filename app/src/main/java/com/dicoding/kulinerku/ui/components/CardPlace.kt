@@ -1,6 +1,7 @@
 package com.dicoding.kulinerku.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,7 +51,8 @@ fun CardPlace(
                 clip = true,
                 shape = RoundedCornerShape(30.dp),
                 ambientColor = Color.Black.copy(alpha = 0.45f)
-            ),
+            )
+            .clickable {  },
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,

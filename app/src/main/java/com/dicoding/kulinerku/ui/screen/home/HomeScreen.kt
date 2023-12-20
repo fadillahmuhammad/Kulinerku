@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dicoding.kulinerku.R
+import com.dicoding.kulinerku.di.Injection
 import com.dicoding.kulinerku.model.Place
 import com.dicoding.kulinerku.model.Restaurant
 import com.dicoding.kulinerku.model.dummyPlace
@@ -34,7 +35,8 @@ import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel
 ) {
     LazyColumn(
         modifier = modifier,
@@ -51,7 +53,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(28.dp))
             HomeSection(
                 title = stringResource(R.string.section_restaurant_recomendation),
-                content = { RestaurantColumn(dummyRestaurant) },
+                content = { RestaurantColumn(dummyRestaurant, viewModel) },
                 onTextClick = {}
             )
         }
@@ -102,6 +104,7 @@ fun PlaceRow(
 @Composable
 fun RestaurantColumn(
     listRestaurant: List<Restaurant>,
+    viewModel: HomeViewModel,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -110,7 +113,7 @@ fun RestaurantColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         listRestaurant.forEach { restaurant ->
-            CardRestaurant(restaurant)
+            CardRestaurant(restaurant, viewModel)
         }
     }
 }
@@ -119,6 +122,7 @@ fun RestaurantColumn(
 @Composable
 fun HomeScreenPreview() {
     KulinerkuTheme {
-        HomeScreen()
+        val userRepository = Injection.provideRepository()
+        HomeScreen(viewModel = HomeViewModel(userRepository))
     }
 }
