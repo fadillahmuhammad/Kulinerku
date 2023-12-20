@@ -35,7 +35,7 @@ class HomeViewModel(private val repository: UserRepository) : ViewModel() {
                 rate = restaurantEntity.rate,
                 distance = restaurantEntity.distance,
                 address = restaurantEntity.address,
-                isOpen = restaurantEntity.isOpen
+                price = restaurantEntity.price
             )
         }
     }

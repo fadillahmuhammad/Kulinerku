@@ -26,6 +26,7 @@ import com.dicoding.kulinerku.di.Injection
 import com.dicoding.kulinerku.ui.ViewModelFactory
 import com.dicoding.kulinerku.ui.navigation.NavigationItem
 import com.dicoding.kulinerku.ui.navigation.Screen
+import com.dicoding.kulinerku.ui.screen.about.AboutScreen
 import com.dicoding.kulinerku.ui.screen.favorites.FavoritesScreen
 import com.dicoding.kulinerku.ui.screen.home.HomeScreen
 import com.dicoding.kulinerku.ui.screen.home.HomeViewModel
@@ -49,7 +50,7 @@ fun MainScreen(
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != Screen.Initial.route) {
+            if (currentRoute != Screen.Initial.route && currentRoute != Screen.About.route) {
                 BottomBar(navController)
             }
         },
@@ -75,11 +76,21 @@ fun MainScreen(
                     onLogoutClick = {
                         navController.navigate(Screen.Initial.route)
                     },
+                    onAboutClick = {
+                        navController.navigate(Screen.About.route)
+                    },
                     viewModel = profileViewModel,
                 )
             }
             composable(Screen.Initial.route) {
                 KulinerkuApp()
+            }
+            composable(Screen.About.route) {
+                AboutScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
             }
         }
     }

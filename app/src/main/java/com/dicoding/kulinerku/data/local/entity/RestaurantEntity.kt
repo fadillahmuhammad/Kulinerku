@@ -12,5 +12,5 @@ data class RestaurantEntity(
     val rate: String,
     val distance: String,
     val address: String,
-    val isOpen: Boolean,
+    val price: String,
 )

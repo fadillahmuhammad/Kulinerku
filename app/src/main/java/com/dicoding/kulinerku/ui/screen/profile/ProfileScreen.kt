@@ -52,6 +52,7 @@ import com.dicoding.kulinerku.ui.theme.fontFamily
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     onLogoutClick: () -> Unit,
+    onAboutClick: () -> Unit,
     viewModel: ProfileViewModel,
 ) {
     val listState = rememberLazyListState()
@@ -168,12 +169,12 @@ fun ProfileScreen(
                     ) {
                         Image(
                             painter = painterResource(R.drawable.cuisine_pref_ic),
-                            contentDescription = stringResource(R.string.cuisine_pref_ic),
+                            contentDescription = stringResource(R.string.resto_pref_ic),
                             modifier = Modifier.size(24.dp)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
-                            text = stringResource(R.string.cuisine_preferences),
+                            text = stringResource(R.string.resto_preferences),
                             fontFamily = fontFamily,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Normal,
@@ -245,7 +246,7 @@ fun ProfileScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-
+                                onAboutClick()
                             }
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -346,6 +347,7 @@ fun ProfileScreenPreview() {
         val userRepository = Injection.provideRepository()
         ProfileScreen(
             onLogoutClick = {},
+            onAboutClick = {},
             viewModel = ProfileViewModel(userRepository)
         )
     }

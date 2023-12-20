@@ -9,7 +9,7 @@ data class Restaurant(
     val rate: String,
     val distance: String,
     val address: String,
-    val isOpen: Boolean,
+    val price: String,
 )
 
 val dummyRestaurant = listOf(
@@ -20,7 +20,7 @@ val dummyRestaurant = listOf(
         "4.5",
         "3.8",
         "Jl. K.H. Ahmad Dahlan No.67, Turangga, Kec. Lengkong, Kota Bandung, Jawa Barat",
-        true,
+        "Rp. 100.000 - Rp. 200.000 /orang"
     ),
     Restaurant(
         2,
@@ -29,7 +29,7 @@ val dummyRestaurant = listOf(
         "4.3",
         "3.2",
         "Jl. K.H. Ahmad Dahlan No.67, Turangga, Kec. Lengkong, Kota Bandung, Jawa Barat",
-        true,
+        "Rp. 100.000 - Rp. 200.000 /orang"
     ),
     Restaurant(
         3,
@@ -38,7 +38,7 @@ val dummyRestaurant = listOf(
         "4.1",
         "3.5",
         "Jl. K.H. Ahmad Dahlan No.67, Turangga, Kec. Lengkong, Kota Bandung, Jawa Barat",
-        true,
+        "Rp. 50.000 - Rp. 100.000 /orang"
     ),
     Restaurant(
         4,
@@ -46,7 +46,7 @@ val dummyRestaurant = listOf(
         "Mie Kocok Bandung Mang Adam",
         "4.4",
         "3.5",
-        "Jl. K.H. Ahmad Dahlan No.67, Turangga, Kec. Lengkong, Kota Bandung, Jawa Barat",
-        true,
+        "Jl. K.H. Ahmad Dahlan No.67, Turangga, Kec. Lengkong, Kota Bandung, Jawa Barat, dadiw dniadiw dniawndi dniwand ndiwad  dniwan  ndiwandi i diwadiwadn niwandai",
+        "Rp. 100.000 - Rp. 200.000 /orang"
     ),
 )

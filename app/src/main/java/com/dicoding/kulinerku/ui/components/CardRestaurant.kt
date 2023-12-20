@@ -32,6 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dicoding.kulinerku.R
@@ -64,7 +65,7 @@ fun CardRestaurant(
     Card(
         modifier = modifier
             .width(358.dp)
-            .height(296.dp)
+            .height(304.dp)
             .shadow(
                 elevation = 8.dp,
                 clip = true,
@@ -143,7 +144,9 @@ fun CardRestaurant(
                     fontFamily = fontFamily,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.weight(4.7f)
+                    modifier = Modifier.weight(4.7f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 RateModel(
                     rate = restaurant.rate,
@@ -151,17 +154,16 @@ fun CardRestaurant(
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-            ) {
-                Text(
-                    text = if (restaurant.isOpen) "Open" else "Closed",
-                    fontFamily = fontFamily,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
+            Text(
+                text = restaurant.price,
+                fontFamily = fontFamily,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier.padding(
+                    start = 16.dp,
+                    end = 16.dp,
+                ),
+            )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = restaurant.address,
@@ -171,9 +173,11 @@ fun CardRestaurant(
                 modifier = Modifier.padding(
                     start = 16.dp,
                     end = 16.dp,
-                    top = 4.dp,
-                    bottom = 16.dp
-                )
+                    bottom = 12.dp
+                ),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                lineHeight = 18.sp
             )
         }
     }
@@ -187,6 +191,6 @@ fun Restaurant.toEntity(): RestaurantEntity {
         rate = this.rate,
         distance = this.distance,
         address = this.address,
-        isOpen = this.isOpen,
+        price = this.price,
     )
 }
