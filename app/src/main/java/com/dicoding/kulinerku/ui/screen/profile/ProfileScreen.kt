@@ -66,7 +66,7 @@ fun ProfileScreen(
     LazyColumn(
         state = listState,
         modifier = modifier,
-        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 16.dp),
+        contentPadding = PaddingValues(vertical = 19.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
@@ -74,9 +74,10 @@ fun ProfileScreen(
                 text = stringResource(R.string.profile),
                 fontFamily = fontFamily,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(19.dp))
             Card(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -9,6 +9,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.dicoding.kulinerku.di.Injection
+import com.dicoding.kulinerku.model.dummyRestaurant
 import com.dicoding.kulinerku.ui.ViewModelFactory
 import com.dicoding.kulinerku.ui.navigation.NavigationItem
 import com.dicoding.kulinerku.ui.navigation.Screen
@@ -87,8 +90,8 @@ fun MainScreen(
             composable(Screen.Favorites.route) {
                 FavoritesScreen(
                     viewModel = homeViewModel,
-                    navigateToDetail = { rewardId ->
-                        navController.navigate(Screen.Detail.createRoute(rewardId))
+                    navigateToDetail = { restaurantId ->
+                        navController.navigate(Screen.Detail.createRoute(restaurantId))
                     }
                 )
             }
@@ -129,7 +132,11 @@ fun MainScreen(
             composable(Screen.Recomendations.route) {
                 RecomendationsScreen(
                     viewModelHome = homeViewModel,
-                    viewModel = recomendationsViewModel
+                    viewModel = recomendationsViewModel,
+                    listRestaurant = dummyRestaurant,
+                    navigateToDetail = { restaurantId ->
+                        navController.navigate(Screen.Detail.createRoute(restaurantId))
+                    },
                 )
             }
         }
@@ -183,7 +190,14 @@ private fun BottomBar(
                         restoreState = true
                         launchSingleTop = true
                     }
-                }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                    unselectedIconColor = MaterialTheme.colorScheme.outline,
+                    unselectedTextColor = MaterialTheme.colorScheme.outline,
+                )
             )
         }
     }

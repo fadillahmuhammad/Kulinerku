@@ -55,12 +55,6 @@ fun HomeScreen(
                 onSearchAction = navigateToRecomendationsScreen
             )
             Spacer(modifier = Modifier.height(16.dp))
-//            HomeSection(
-//                title = stringResource(R.string.section_popular_place),
-//                content = { PlaceRow(dummyPlace) },
-//                onTextClick = {}
-//            )
-//            Spacer(modifier = Modifier.height(28.dp))
             HomeSection(
                 title = stringResource(R.string.section_restaurant_recomendation),
                 content = { RestaurantColumn(dummyRestaurant, viewModel, navigateToDetail) },
@@ -102,22 +96,6 @@ fun Banner(
         )
     }
 }
-
-//@Composable
-//fun PlaceRow(
-//    listPlace: List<Place>,
-//    modifier: Modifier = Modifier
-//) {
-//    LazyRow(
-//        horizontalArrangement = Arrangement.spacedBy(16.dp),
-//        contentPadding = PaddingValues(horizontal = 16.dp),
-//        modifier = modifier
-//    ) {
-//        items(listPlace, key = { it.name }) { place ->
-//            CardPlace(place)
-//        }
-//    }
-//}
 
 @Composable
 fun RestaurantColumn(

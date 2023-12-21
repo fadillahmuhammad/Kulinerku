@@ -40,7 +40,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -78,7 +77,6 @@ fun DetailScreen(
                     data.image,
                     data.name,
                     data.rate,
-                    data.distance,
                     data.address,
                     data.price,
                     onBackClick = onBackClick,
@@ -97,7 +95,6 @@ fun DetailContent(
     @DrawableRes image: Int,
     name: String,
     rate: String,
-    distance: String,
     address: String,
     price: String,
     onBackClick: () -> Unit,
@@ -120,7 +117,7 @@ fun DetailContent(
     ) {
         Row(
             modifier = Modifier
-                .padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 16.dp),
+                .padding(start = 24.dp, end = 24.dp, top = 19.dp, bottom = 19.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -134,7 +131,8 @@ fun DetailContent(
                 text = stringResource(R.string.detail_title),
                 fontFamily = fontFamily,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
         }
         Card(
@@ -161,18 +159,18 @@ fun DetailContent(
                     .fillMaxSize()
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp),
         ) {
             Text(
                 text = name,
                 fontFamily = fontFamily,
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(4f)
+                modifier = Modifier.weight(4f),
+                color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.width(16.dp))
             Image(
@@ -215,28 +213,36 @@ fun DetailContent(
             }
         ) {
             Tab(
-                text = { Text(
-                    text = stringResource(R.string.reviews_tab),
-                    fontFamily = fontFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                ) },
+                text = {
+                    Text(
+                        text = stringResource(R.string.reviews_tab),
+                        fontFamily = fontFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                },
                 selected = selectedTabIndex == 0,
                 onClick = {
                     selectedTabIndex = 0
-                }
+                },
+                selectedContentColor = MaterialTheme.colorScheme.primary,
+                unselectedContentColor = MaterialTheme.colorScheme.outline
             )
             Tab(
-                text = { Text(
-                    text = stringResource(R.string.about_tab),
-                    fontFamily = fontFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                ) },
+                text = {
+                    Text(
+                        text = stringResource(R.string.about_tab),
+                        fontFamily = fontFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                },
                 selected = selectedTabIndex == 1,
                 onClick = {
                     selectedTabIndex = 1
-                }
+                },
+                selectedContentColor = MaterialTheme.colorScheme.primary,
+                unselectedContentColor = MaterialTheme.colorScheme.outline
             )
         }
         when (selectedTabIndex) {
@@ -244,7 +250,7 @@ fun DetailContent(
                 LazyColumn(
                     modifier = Modifier,
                     contentPadding = PaddingValues(bottom = 26.dp)
-                ){
+                ) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(
@@ -259,7 +265,9 @@ fun DetailContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(text = "Rekomendasi banget! tempatnya nyaman.")
                         }
-                        Divider(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp))
+                        Divider(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp))
                         Row(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -272,15 +280,18 @@ fun DetailContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(text = "Enak buat belajar! recomended.")
                         }
-                        Divider(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp))
+                        Divider(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp))
                     }
                 }
             }
+
             1 -> {
                 LazyColumn(
                     modifier = Modifier,
                     contentPadding = PaddingValues(bottom = 26.dp)
-                ){
+                ) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(
@@ -295,7 +306,9 @@ fun DetailContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(text = price)
                         }
-                        Divider(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp))
+                        Divider(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp))
                         Row(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -308,7 +321,9 @@ fun DetailContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(text = rate)
                         }
-                        Divider(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp))
+                        Divider(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp))
                         Row(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -321,7 +336,9 @@ fun DetailContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(text = address)
                         }
-                        Divider(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp))
+                        Divider(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp))
                     }
                 }
             }

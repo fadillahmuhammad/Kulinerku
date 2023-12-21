@@ -103,9 +103,8 @@ fun CardRestaurant(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    DistanceModel(
-                        modifier = Modifier,
-                        distance = restaurant.distance
+                    RateModel(
+                        rate = restaurant.rate,
                     )
                     Image(
                         painter = painterResource(
@@ -136,53 +135,59 @@ fun CardRestaurant(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = restaurant.name,
-                    fontFamily = fontFamily,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(3.2f),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
+            Text(
+                text = restaurant.name,
+                fontFamily = fontFamily,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(
+                    start = 16.dp,
+                    end = 16.dp
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                RateModel(
-                    rate = restaurant.rate,
-                    modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.money_ic),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = restaurant.price,
+                    fontFamily = fontFamily,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = restaurant.price,
-                fontFamily = fontFamily,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                ),
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = restaurant.address,
-                fontFamily = fontFamily,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 12.dp
-                ),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                lineHeight = 18.sp
-            )
+            Row(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.loc_ic),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = restaurant.address,
+                    fontFamily = fontFamily,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    modifier = Modifier.padding(
+                        bottom = 12.dp
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    lineHeight = 18.sp
+                )
+            }
         }
     }
 }
@@ -193,8 +198,10 @@ fun Restaurant.toEntity(): RestaurantEntity {
         image = this.image,
         name = this.name,
         rate = this.rate,
-        distance = this.distance,
         address = this.address,
         price = this.price,
+        street = this.street,
+        region = this.region,
+        subdistrict = this.subdistrict
     )
 }

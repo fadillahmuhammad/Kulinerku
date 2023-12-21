@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,7 +38,7 @@ fun AboutScreen(
     ) {
         Row(
             modifier = Modifier
-                .padding(bottom = 16.dp, top = 16.dp, start = 24.dp, end = 24.dp),
+                .padding(bottom = 16.dp, top = 20.dp, start = 24.dp, end = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
@@ -51,13 +52,14 @@ fun AboutScreen(
                 text = stringResource(R.string.about_title),
                 fontFamily = fontFamily,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
         }
         LazyColumn(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(bottom = 26.dp, start = 16.dp, end = 16.dp)
+            contentPadding = PaddingValues(bottom = 46.dp, start = 16.dp, end = 16.dp)
         ) {
             item {
                 Image(
@@ -66,7 +68,7 @@ fun AboutScreen(
                     modifier = Modifier
                         .size(250.dp)
                 )
-                Spacer(modifier = Modifier.height(34.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     text = stringResource(R.string.about),
                     fontFamily = fontFamily,

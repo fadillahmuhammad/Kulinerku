@@ -1,62 +1,179 @@
 package com.dicoding.kulinerku.ui.components
-//
-//import androidx.compose.foundation.Image
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.size
-//import androidx.compose.material3.MaterialTheme
-//import androidx.compose.material3.Shapes
-//import androidx.compose.material3.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.draw.clip
-//import androidx.compose.ui.layout.ContentScale
-//import androidx.compose.ui.res.painterResource
-//import androidx.compose.ui.res.stringResource
-//import androidx.compose.ui.text.font.FontWeight
-//import androidx.compose.ui.text.style.TextOverflow
-//import androidx.compose.ui.tooling.preview.Preview
-//import androidx.compose.ui.unit.dp
-//import com.dicoding.kulinerku.R
-//import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
-//
-//@Composable
-//fun CardRestaurantSmall(
-//    image: Int,
-//    title: String,
-//    requiredPoint: Int,
-//    modifier: Modifier = Modifier,
-//) {
-//    Column(
-//        modifier = modifier
-//    ) {
-//        Image(
-//            painter = painterResource(image),
-//            contentDescription = null,
-//            contentScale = ContentScale.Crop,
-//            modifier = Modifier
-//                .size(150.dp)
-//                .clip(Shapes.medium)
-//        )
-//        Text(
-//            text = title,
-//            maxLines = 2,
-//            overflow = TextOverflow.Ellipsis,
-//            style = MaterialTheme.typography.titleMedium.copy(
-//                fontWeight = FontWeight.ExtraBold
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.dicoding.kulinerku.R
+import com.dicoding.kulinerku.model.Restaurant
+import com.dicoding.kulinerku.ui.screen.home.HomeViewModel
+import com.dicoding.kulinerku.ui.theme.fontFamily
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun CardRestaurantSmall(
+    restaurant: Restaurant,
+    viewModel: HomeViewModel,
+    navigateToDetail: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var isFavoriteState by remember { mutableStateOf(false) }
+
+    val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+    LaunchedEffect(restaurant) {
+        val restaurantEntity = viewModel.getRestaurantByName(restaurant.name)
+        if (restaurantEntity != null) {
+            isFavoriteState = viewModel.isFavorite(restaurantEntity)
+        }
+    }
+
+    Card(
+        modifier = modifier
+            .width(150.dp)
+            .height(200.dp)
+            .shadow(
+                elevation = 4.dp,
+                clip = true,
+                shape = RoundedCornerShape(16.dp),
+                ambientColor = Color.Black.copy(alpha = 0.35f)
+            )
+            .clickable {
+                navigateToDetail(restaurant.id)
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        )
+    ) {
+        Column(
+            modifier = Modifier
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(restaurant.image),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    RateModel(
+                        rate = restaurant.rate,
+                    )
+                    Image(
+                        painter = painterResource(
+                            id = if (isFavoriteState) {
+                                R.drawable.favo_fill_ic
+                            } else {
+                                R.drawable.favo_outline_ic
+                            }
+                        ),
+                        contentDescription = stringResource(R.string.button_favorites),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clickable {
+                                coroutineScope.launch {
+                                    try {
+                                        if (isFavoriteState) {
+                                            viewModel.deleteFavorite(restaurant.toEntity())
+                                        } else {
+                                            viewModel.insertFavorite(restaurant.toEntity())
+                                        }
+                                        isFavoriteState = !isFavoriteState
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }
+                            }
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = restaurant.name,
+                fontFamily = fontFamily,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(
+                    start = 8.dp,
+                    end = 8.dp,
+                ),
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = restaurant.price,
+                fontFamily = fontFamily,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier.padding(
+                    start = 8.dp,
+                    end = 8.dp,
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+//            Text(
+//                text = restaurant.address,
+//                fontFamily = fontFamily,
+//                fontSize = 12.sp,
+//                fontWeight = FontWeight.Normal,
+//                modifier = Modifier.padding(
+//                    start = 16.dp,
+//                    end = 16.dp,
+//                    bottom = 12.dp
+//                ),
+//                maxLines = 2,
+//                overflow = TextOverflow.Ellipsis,
+//                lineHeight = 18.sp
 //            )
-//        )
-//        Text(
-//            text = stringResource(R.string.required_point, requiredPoint),
-//            style = MaterialTheme.typography.titleSmall,
-//            color = MaterialTheme.colorScheme.secondary
-//        )
-//    }
-//}
-//
-//@Composable
-//@Preview(showBackground = true)
-//fun CardRestaurantSmallPreview() {
-//    KulinerkuTheme {
-//        CardRestaurantSmall(R.drawable.reward_4, "Jaket Hoodie Dicoding", 4000)
-//    }
-//}
+        }
+    }
+}

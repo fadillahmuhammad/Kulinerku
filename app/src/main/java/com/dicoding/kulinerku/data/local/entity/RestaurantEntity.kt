@@ -10,7 +10,9 @@ data class RestaurantEntity(
     val image: Int,
     val name: String,
     val rate: String,
-    val distance: String,
     val address: String,
     val price: String,
+    val street: String,
+    val region: String,
+    val subdistrict: String,
 )

@@ -58,7 +58,7 @@ fun SectionText(
         Text(
             text = stringResource(R.string.see_all),
             fontFamily = fontFamily,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable { onTextClick() }

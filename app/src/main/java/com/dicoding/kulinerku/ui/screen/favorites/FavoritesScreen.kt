@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,16 +45,17 @@ fun FavoritesScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 16.dp),
+            .padding(top = 19.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = stringResource(R.string.menu_favorites),
             fontFamily = fontFamily,
             fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(19.dp))
         if (favorites.isEmpty()) {
             Image(
                 painter = painterResource(id = R.drawable.data_notfound),
