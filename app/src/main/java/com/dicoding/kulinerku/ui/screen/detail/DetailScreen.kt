@@ -42,7 +42,6 @@ import com.dicoding.kulinerku.R
 import com.dicoding.kulinerku.model.Restaurant
 import com.dicoding.kulinerku.ui.common.ResultState
 import com.dicoding.kulinerku.ui.components.toEntity
-import com.dicoding.kulinerku.ui.screen.home.HomeViewModel
 import com.dicoding.kulinerku.ui.theme.fontFamily
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +53,10 @@ fun DetailScreen(
     viewModel: DetailViewModel,
     onBackClick: () -> Unit,
 ) {
+    LaunchedEffect(restaurantId) {
+        viewModel.getRestaurantById(restaurantId)
+    }
+
     viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { resultState ->
         when (resultState) {
             is ResultState.Loading -> {
@@ -94,6 +97,11 @@ fun DetailContent(
     modifier: Modifier = Modifier
 ) {
     var isFavoriteState by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        val restaurantEntity = viewModel.getRestaurantByName(restaurant.name)
+        isFavoriteState = viewModel.isFavorite(restaurantEntity)
+    }
 
     val coroutineScope = CoroutineScope(Dispatchers.Default)
 
@@ -145,7 +153,7 @@ fun DetailContent(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -154,6 +162,7 @@ fun DetailContent(
                 fontFamily = fontFamily,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(4f)
             )
             Image(
                 painter = painterResource(
@@ -165,7 +174,7 @@ fun DetailContent(
                 ),
                 contentDescription = stringResource(R.string.button_favorites),
                 modifier = Modifier
-                    .size(34.dp)
+                    .size(44.dp)
                     .clickable {
                         coroutineScope.launch {
                             try {

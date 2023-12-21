@@ -30,4 +30,12 @@ class DetailViewModel(private val repository: UserRepository) : ViewModel() {
     suspend fun deleteFavorite(restaurant: RestaurantEntity) {
         repository.deleteFavorite(restaurant)
     }
+
+    suspend fun isFavorite(restaurant: RestaurantEntity): Boolean {
+        return repository.isFavorite(restaurant)
+    }
+
+    suspend fun getRestaurantByName(name: String): RestaurantEntity {
+        return repository.getRestaurantByName(name)
+    }
 }
