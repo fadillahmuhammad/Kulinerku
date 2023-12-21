@@ -36,6 +36,8 @@ import com.dicoding.kulinerku.ui.screen.home.HomeScreen
 import com.dicoding.kulinerku.ui.screen.home.HomeViewModel
 import com.dicoding.kulinerku.ui.screen.profile.ProfileScreen
 import com.dicoding.kulinerku.ui.screen.profile.ProfileViewModel
+import com.dicoding.kulinerku.ui.screen.recomendations.RecomendationsScreen
+import com.dicoding.kulinerku.ui.screen.recomendations.RecomendationsViewModel
 
 @Composable
 fun MainScreen(
@@ -54,10 +56,13 @@ fun MainScreen(
     val detailViewModel = viewModel<DetailViewModel>(
         factory = ViewModelFactory(userRepository)
     )
+    val recomendationsViewModel = viewModel<RecomendationsViewModel>(
+        factory = ViewModelFactory(userRepository)
+    )
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != Screen.Initial.route && currentRoute != Screen.About.route && currentRoute != Screen.Detail.route) {
+            if (currentRoute != Screen.Initial.route && currentRoute != Screen.About.route && currentRoute != Screen.Detail.route && currentRoute != Screen.Recomendations.route) {
                 BottomBar(navController)
             }
         },
@@ -73,6 +78,9 @@ fun MainScreen(
                     viewModel = homeViewModel,
                     navigateToDetail = { rewardId ->
                         navController.navigate(Screen.Detail.createRoute(rewardId))
+                    },
+                    navigateToRecomendationsScreen = {
+                        navController.navigate(Screen.Recomendations.route)
                     }
                 )
             }
@@ -116,6 +124,12 @@ fun MainScreen(
                     onBackClick = {
                         navController.navigateUp()
                     }
+                )
+            }
+            composable(Screen.Recomendations.route) {
+                RecomendationsScreen(
+                    viewModelHome = homeViewModel,
+                    viewModel = recomendationsViewModel
                 )
             }
         }

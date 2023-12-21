@@ -29,12 +29,14 @@ fun Search(
     modifier: Modifier = Modifier,
     query: String,
     onSearch: (String) -> Unit,
-    onClear: () -> Unit
+    onClear: () -> Unit,
+    onSearchAction: () -> Unit,
+    padding: Int
 ) {
     SearchBar(
         query = query,
         onQueryChange = onSearch,
-        onSearch = {},
+        onSearch = { onSearchAction() },
         active = false,
         onActiveChange = {},
         leadingIcon = {
@@ -66,7 +68,7 @@ fun Search(
             containerColor = MaterialTheme.colorScheme.background
         ),
         modifier = modifier
-            .padding(16.dp)
+            .padding(padding.dp)
             .fillMaxWidth()
             .heightIn(min = 48.dp)
     ) {
@@ -80,7 +82,9 @@ fun SearchPreview() {
         Search(
             query = "",
             onSearch = {},
-            onClear = {}
+            onClear = {},
+            onSearchAction = {},
+            padding = 16
         )
     }
 }

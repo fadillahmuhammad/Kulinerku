@@ -7,6 +7,7 @@ import com.dicoding.kulinerku.ui.screen.detail.DetailViewModel
 import com.dicoding.kulinerku.ui.screen.home.HomeViewModel
 import com.dicoding.kulinerku.ui.screen.login.LoginViewModel
 import com.dicoding.kulinerku.ui.screen.profile.ProfileViewModel
+import com.dicoding.kulinerku.ui.screen.recomendations.RecomendationsViewModel
 import com.dicoding.kulinerku.ui.screen.register.RegisterViewModel
 
 class ViewModelFactory(private val repository: UserRepository) :
@@ -24,6 +25,8 @@ class ViewModelFactory(private val repository: UserRepository) :
             return HomeViewModel(repository) as T
         } else if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
             return DetailViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(RecomendationsViewModel::class.java)) {
+            return RecomendationsViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

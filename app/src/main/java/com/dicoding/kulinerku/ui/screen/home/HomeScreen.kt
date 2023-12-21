@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,11 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dicoding.kulinerku.R
 import com.dicoding.kulinerku.di.Injection
-import com.dicoding.kulinerku.model.Place
 import com.dicoding.kulinerku.model.Restaurant
-import com.dicoding.kulinerku.model.dummyPlace
 import com.dicoding.kulinerku.model.dummyRestaurant
-import com.dicoding.kulinerku.ui.components.CardPlace
 import com.dicoding.kulinerku.ui.components.CardRestaurant
 import com.dicoding.kulinerku.ui.components.HomeSection
 import com.dicoding.kulinerku.ui.components.Search
@@ -42,6 +37,7 @@ import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navigateToDetail: (Int) -> Unit,
+    navigateToRecomendationsScreen: () -> Unit,
     viewModel: HomeViewModel
 ) {
     val context = LocalContext.current
@@ -55,19 +51,20 @@ fun HomeScreen(
     ) {
         item {
             Banner(
-                viewModel = viewModel
+                viewModel = viewModel,
+                onSearchAction = navigateToRecomendationsScreen
             )
             Spacer(modifier = Modifier.height(16.dp))
-            HomeSection(
-                title = stringResource(R.string.section_popular_place),
-                content = { PlaceRow(dummyPlace) },
-                onTextClick = {}
-            )
-            Spacer(modifier = Modifier.height(28.dp))
+//            HomeSection(
+//                title = stringResource(R.string.section_popular_place),
+//                content = { PlaceRow(dummyPlace) },
+//                onTextClick = {}
+//            )
+//            Spacer(modifier = Modifier.height(28.dp))
             HomeSection(
                 title = stringResource(R.string.section_restaurant_recomendation),
                 content = { RestaurantColumn(dummyRestaurant, viewModel, navigateToDetail) },
-                onTextClick = {}
+                onTextClick = { navigateToRecomendationsScreen() }
             )
         }
     }
@@ -76,7 +73,8 @@ fun HomeScreen(
 @Composable
 fun Banner(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    onSearchAction: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -98,26 +96,28 @@ fun Banner(
         Search(
             query = viewModel.querySearch.value,
             onSearch = viewModel::search,
-            onClear = viewModel::clearQuery
+            onClear = viewModel::clearQuery,
+            onSearchAction = onSearchAction,
+            padding = 16
         )
     }
 }
 
-@Composable
-fun PlaceRow(
-    listPlace: List<Place>,
-    modifier: Modifier = Modifier
-) {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        modifier = modifier
-    ) {
-        items(listPlace, key = { it.name }) { place ->
-            CardPlace(place)
-        }
-    }
-}
+//@Composable
+//fun PlaceRow(
+//    listPlace: List<Place>,
+//    modifier: Modifier = Modifier
+//) {
+//    LazyRow(
+//        horizontalArrangement = Arrangement.spacedBy(16.dp),
+//        contentPadding = PaddingValues(horizontal = 16.dp),
+//        modifier = modifier
+//    ) {
+//        items(listPlace, key = { it.name }) { place ->
+//            CardPlace(place)
+//        }
+//    }
+//}
 
 @Composable
 fun RestaurantColumn(
@@ -148,6 +148,9 @@ fun Context.findActivity(): ComponentActivity? = when (this) {
 fun HomeScreenPreview() {
     KulinerkuTheme {
         val userRepository = Injection.provideRepository()
-        HomeScreen(viewModel = HomeViewModel(userRepository), navigateToDetail = {})
+        HomeScreen(
+            viewModel = HomeViewModel(userRepository),
+            navigateToDetail = {},
+            navigateToRecomendationsScreen = {})
     }
 }

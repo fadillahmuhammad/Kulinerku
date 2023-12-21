@@ -60,4 +60,6 @@
     <string name="reviews_tab">Reviews</string>
     <string name="about_tab">About</string>
     <string name="clear_search">Clear Search</string>
+    <string name="search_restaurants">Search Restaurants</string>
+    <string name="sub_title">Search based on your preferences 😊</string>
 </resources>
