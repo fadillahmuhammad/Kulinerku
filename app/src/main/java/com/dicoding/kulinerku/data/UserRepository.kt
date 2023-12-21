@@ -9,6 +9,8 @@ import com.dicoding.kulinerku.data.local.room.RestaurantDao
 import com.dicoding.kulinerku.data.remote.response.LoginResponse
 import com.dicoding.kulinerku.data.remote.response.RegisterResponse
 import com.dicoding.kulinerku.data.remote.retrofit.ApiService
+import com.dicoding.kulinerku.model.Restaurant
+import com.dicoding.kulinerku.model.dummyRestaurant
 import com.dicoding.kulinerku.ui.common.ResultState
 import kotlinx.coroutines.flow.firstOrNull
 import retrofit2.HttpException
@@ -127,6 +129,10 @@ class UserRepository(
     suspend fun isFavorite(restaurant: RestaurantEntity): Boolean {
         val favorites = getAllFavorites()
         return favorites.any { it.name == restaurant.name }
+    }
+
+    fun getRestaurantById(restaurantId: Int): Restaurant {
+        return dummyRestaurant.first { it.id == restaurantId }
     }
 
     companion object {

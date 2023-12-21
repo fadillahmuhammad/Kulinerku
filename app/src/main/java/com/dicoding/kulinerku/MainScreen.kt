@@ -12,21 +12,26 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.dicoding.kulinerku.di.Injection
 import com.dicoding.kulinerku.ui.ViewModelFactory
 import com.dicoding.kulinerku.ui.navigation.NavigationItem
 import com.dicoding.kulinerku.ui.navigation.Screen
 import com.dicoding.kulinerku.ui.screen.about.AboutScreen
+import com.dicoding.kulinerku.ui.screen.detail.DetailScreen
+import com.dicoding.kulinerku.ui.screen.detail.DetailViewModel
 import com.dicoding.kulinerku.ui.screen.favorites.FavoritesScreen
 import com.dicoding.kulinerku.ui.screen.home.HomeScreen
 import com.dicoding.kulinerku.ui.screen.home.HomeViewModel
@@ -47,10 +52,14 @@ fun MainScreen(
     val homeViewModel = viewModel<HomeViewModel>(
         factory = ViewModelFactory(userRepository)
     )
+    val detailViewModel = viewModel<DetailViewModel>(
+        factory = ViewModelFactory(userRepository)
+    )
+    val listRestaurants by homeViewModel.allRestaurants.collectAsState()
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != Screen.Initial.route && currentRoute != Screen.About.route) {
+            if (currentRoute != Screen.Initial.route && currentRoute != Screen.About.route && currentRoute != Screen.Detail.route) {
                 BottomBar(navController)
             }
         },
@@ -63,12 +72,32 @@ fun MainScreen(
         ) {
             composable(Screen.Home.route) {
                 HomeScreen(
-                    viewModel = homeViewModel
+                    viewModel = homeViewModel,
+                    navigateToDetail = { rewardId ->
+                        navController.navigate(Screen.Detail.createRoute(rewardId))
+                    }
                 )
             }
             composable(Screen.Favorites.route) {
                 FavoritesScreen(
-                    viewModel = homeViewModel
+                    viewModel = homeViewModel,
+                    navigateToDetail = { rewardId ->
+                        navController.navigate(Screen.Detail.createRoute(rewardId))
+                    }
+                )
+            }
+            composable(
+                route = Screen.Detail.route,
+                arguments = listOf(navArgument("restaurantId") { type = NavType.IntType }),
+            ) {
+                val id = it.arguments?.getInt("restaurantId") ?: -1
+                println("Debug: Restaurant ID from arguments: $id")
+                DetailScreen(
+                    restaurantId = id,
+                    viewModel = detailViewModel,
+                    onBackClick = {
+                        navController.navigateUp()
+                    },
                 )
             }
             composable(Screen.Profile.route) {

@@ -49,6 +49,7 @@ import kotlinx.coroutines.launch
 fun CardRestaurant(
     restaurant: Restaurant,
     viewModel: HomeViewModel,
+    navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var isFavoriteState by remember { mutableStateOf(false) }
@@ -72,7 +73,9 @@ fun CardRestaurant(
                 shape = RoundedCornerShape(30.dp),
                 ambientColor = Color.Black.copy(alpha = 0.35f)
             )
-            .clickable { },
+            .clickable {
+                navigateToDetail(restaurant.id)
+            },
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,

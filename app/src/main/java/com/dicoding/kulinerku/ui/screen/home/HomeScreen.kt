@@ -36,6 +36,7 @@ import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    navigateToDetail: (Int) -> Unit,
     viewModel: HomeViewModel
 ) {
     LazyColumn(
@@ -53,7 +54,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(28.dp))
             HomeSection(
                 title = stringResource(R.string.section_restaurant_recomendation),
-                content = { RestaurantColumn(dummyRestaurant, viewModel) },
+                content = { RestaurantColumn(dummyRestaurant, viewModel, navigateToDetail) },
                 onTextClick = {}
             )
         }
@@ -105,6 +106,7 @@ fun PlaceRow(
 fun RestaurantColumn(
     listRestaurant: List<Restaurant>,
     viewModel: HomeViewModel,
+    navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -113,7 +115,7 @@ fun RestaurantColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         listRestaurant.forEach { restaurant ->
-            CardRestaurant(restaurant, viewModel)
+            CardRestaurant(restaurant, viewModel, navigateToDetail)
         }
     }
 }
@@ -123,6 +125,6 @@ fun RestaurantColumn(
 fun HomeScreenPreview() {
     KulinerkuTheme {
         val userRepository = Injection.provideRepository()
-        HomeScreen(viewModel = HomeViewModel(userRepository))
+        HomeScreen(viewModel = HomeViewModel(userRepository), navigateToDetail = {})
     }
 }

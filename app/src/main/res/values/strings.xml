@@ -55,4 +55,6 @@
     <string name="resto_preferences">Preferences</string>
     <string name="about">KulinerKu is a mobile application crafted specifically to help you discover your favorite restaurants or cafes in Bandung. Developed by our team with a passion for Small and Medium Enterprises (SMEs), KulinerKu provides restaurant recommendations based on your taste and preferences. Explore the local culinary delights around Bandung\'s tourist attractions effortlessly through this app. We are here to enrich your dining experience and support the growth of SME restaurants in the city. Discover new flavors and savor every bite with KulinerKu!</string>
     <string name="about_title">About Kulinerku</string>
+    <string name="detail_title">Detail Restaurant</string>
+    <string name="data_notfound">Data Not Found</string>
 </resources>

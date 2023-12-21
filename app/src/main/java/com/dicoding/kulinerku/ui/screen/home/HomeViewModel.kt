@@ -26,7 +26,7 @@ class HomeViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun List<RestaurantEntity>.toRestaurantList(): List<Restaurant> {
+    private fun List<RestaurantEntity>.toRestaurantList(): List<Restaurant> {
         return map { restaurantEntity ->
             Restaurant(
                 id = restaurantEntity.id,
