@@ -17,7 +17,7 @@ val dummyRestaurant = listOf(
         1,
         R.drawable.miekocok,
         "Mie Kocok Bandung Mang Dadeng",
-        "4.5",
+        "4.5/5",
         "3.8",
         "Jl. K.H. Ahmad Dahlan No.67, Turangga, Kec. Lengkong, Kota Bandung, Jawa Barat",
         "Rp. 100.000 - Rp. 200.000 /orang"
