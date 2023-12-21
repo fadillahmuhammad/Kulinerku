@@ -54,7 +54,9 @@ fun HomeScreen(
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         item {
-            Banner()
+            Banner(
+                viewModel = viewModel
+            )
             Spacer(modifier = Modifier.height(16.dp))
             HomeSection(
                 title = stringResource(R.string.section_popular_place),
@@ -74,6 +76,7 @@ fun HomeScreen(
 @Composable
 fun Banner(
     modifier: Modifier = Modifier,
+    viewModel: HomeViewModel
 ) {
     Box(
         modifier = modifier
@@ -92,7 +95,11 @@ fun Banner(
             contentScale = ContentScale.Crop,
             modifier = Modifier.height(147.dp)
         )
-        Search()
+        Search(
+            query = viewModel.querySearch.value,
+            onSearch = viewModel::search,
+            onClear = viewModel::clearQuery
+        )
     }
 }
 

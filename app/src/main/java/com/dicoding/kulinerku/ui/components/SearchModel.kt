@@ -1,10 +1,13 @@
 package com.dicoding.kulinerku.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,11 +26,14 @@ import com.dicoding.kulinerku.ui.theme.KulinerkuTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Search(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    query: String,
+    onSearch: (String) -> Unit,
+    onClear: () -> Unit
 ) {
     SearchBar(
-        query = "",
-        onQueryChange = {},
+        query = query,
+        onQueryChange = onSearch,
         onSearch = {},
         active = false,
         onActiveChange = {},
@@ -37,6 +43,20 @@ fun Search(
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
+        },
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = stringResource(R.string.clear_search),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .clickable {
+                        onClear()
+                    }
+                )
+            }
         },
         placeholder = {
             Text(stringResource(R.string.placeholder_search))
@@ -57,6 +77,10 @@ fun Search(
 @Composable
 fun SearchPreview() {
     KulinerkuTheme {
-        Search()
+        Search(
+            query = "",
+            onSearch = {},
+            onClear = {}
+        )
     }
 }

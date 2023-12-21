@@ -59,4 +59,5 @@
     <string name="data_notfound">Data Not Found</string>
     <string name="reviews_tab">Reviews</string>
     <string name="about_tab">About</string>
+    <string name="clear_search">Clear Search</string>
 </resources>

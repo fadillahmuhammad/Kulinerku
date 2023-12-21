@@ -145,12 +145,13 @@ fun CardRestaurant(
                 Text(
                     text = restaurant.name,
                     fontFamily = fontFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.weight(4.7f),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(3.2f),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
+                Spacer(modifier = Modifier.width(16.dp))
                 RateModel(
                     rate = restaurant.rate,
                     modifier = Modifier.weight(1f)
@@ -161,7 +162,7 @@ fun CardRestaurant(
                 text = restaurant.price,
                 fontFamily = fontFamily,
                 fontSize = 12.sp,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(
                     start = 16.dp,
                     end = 16.dp,

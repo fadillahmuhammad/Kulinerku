@@ -129,7 +129,7 @@ fun DetailContent(
                 modifier = Modifier
                     .clickable { onBackClick() }
             )
-            Spacer(modifier = Modifier.width(48.dp))
+            Spacer(modifier = Modifier.width(42.dp))
             Text(
                 text = stringResource(R.string.detail_title),
                 fontFamily = fontFamily,
@@ -171,7 +171,7 @@ fun DetailContent(
                 text = name,
                 fontFamily = fontFamily,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(4f)
             )
             Spacer(modifier = Modifier.width(16.dp))

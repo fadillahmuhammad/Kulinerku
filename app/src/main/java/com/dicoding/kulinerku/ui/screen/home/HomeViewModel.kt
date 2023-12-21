@@ -1,5 +1,7 @@
 package com.dicoding.kulinerku.ui.screen.home
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.kulinerku.data.UserRepository
@@ -14,9 +16,22 @@ class HomeViewModel(private val repository: UserRepository) : ViewModel() {
     private val _allRestaurants = MutableStateFlow<List<Restaurant>>(emptyList())
     val allRestaurants: StateFlow<List<Restaurant>> get() = _allRestaurants
 
+    private val _querySearch = mutableStateOf("")
+    val querySearch: State<String> get() = _querySearch
+
     init {
         viewModelScope.launch {
             _allRestaurants.value = repository.getAllFavorites().toRestaurantList()
+        }
+    }
+
+    fun search(newQuery: String) {
+        _querySearch.value = newQuery
+    }
+
+    fun clearQuery() {
+        viewModelScope.launch {
+            _querySearch.value = ""
         }
     }
 
