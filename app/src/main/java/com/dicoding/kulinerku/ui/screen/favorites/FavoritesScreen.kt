@@ -69,9 +69,6 @@ fun FavoritesScreen(
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
                 itemsIndexed(favorites) { index, restaurant ->
-                    LaunchedEffect(Unit) {
-                        viewModel.loadAllRestaurants()
-                    }
                     key(index) {
                         RestaurantColumn(listOf(restaurant), viewModel, navigateToDetail)
                         Spacer(modifier = Modifier.height(16.dp))

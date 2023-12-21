@@ -12,7 +12,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -55,7 +54,6 @@ fun MainScreen(
     val detailViewModel = viewModel<DetailViewModel>(
         factory = ViewModelFactory(userRepository)
     )
-    val listRestaurants by homeViewModel.allRestaurants.collectAsState()
 
     Scaffold(
         bottomBar = {
@@ -91,7 +89,6 @@ fun MainScreen(
                 arguments = listOf(navArgument("restaurantId") { type = NavType.IntType }),
             ) {
                 val id = it.arguments?.getInt("restaurantId") ?: -1
-                println("Debug: Restaurant ID from arguments: $id")
                 DetailScreen(
                     restaurantId = id,
                     viewModel = detailViewModel,

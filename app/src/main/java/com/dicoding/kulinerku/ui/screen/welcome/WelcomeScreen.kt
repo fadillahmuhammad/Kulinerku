@@ -91,7 +91,7 @@ fun WelcomeScreen(
     }
 }
 
-fun Context.findActivity(): ComponentActivity? = when (this) {
+private fun Context.findActivity(): ComponentActivity? = when (this) {
     is ComponentActivity -> this
     is ContextWrapper -> baseContext.findActivity()
     else -> null

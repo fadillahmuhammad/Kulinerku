@@ -1,5 +1,9 @@
 package com.dicoding.kulinerku.ui.screen.home
 
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
@@ -39,6 +44,11 @@ fun HomeScreen(
     navigateToDetail: (Int) -> Unit,
     viewModel: HomeViewModel
 ) {
+    val context = LocalContext.current
+    BackHandler {
+        context.findActivity()?.finish()
+    }
+
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(bottom = 16.dp)
@@ -118,6 +128,12 @@ fun RestaurantColumn(
             CardRestaurant(restaurant, viewModel, navigateToDetail)
         }
     }
+}
+
+fun Context.findActivity(): ComponentActivity? = when (this) {
+    is ComponentActivity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 @Preview(device = Devices.PIXEL_4, showBackground = true)

@@ -127,8 +127,8 @@ class UserRepository(
     }
 
     suspend fun isFavorite(restaurant: RestaurantEntity): Boolean {
-        val favorites = getAllFavorites()
-        return favorites.any { it.name == restaurant.name }
+        val favorites = getAllFavorites() ?: return false
+        return restaurant != null && favorites.any { it.name == restaurant.name }
     }
 
     fun getRestaurantById(restaurantId: Int): Restaurant {
