@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -139,7 +140,7 @@ fun CardRestaurantSmall(
                 fontFamily = fontFamily,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(
                     start = 8.dp,
@@ -160,20 +161,27 @@ fun CardRestaurantSmall(
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.height(4.dp))
-//            Text(
-//                text = restaurant.address,
-//                fontFamily = fontFamily,
-//                fontSize = 12.sp,
-//                fontWeight = FontWeight.Normal,
-//                modifier = Modifier.padding(
-//                    start = 16.dp,
-//                    end = 16.dp,
-//                    bottom = 12.dp
-//                ),
-//                maxLines = 2,
-//                overflow = TextOverflow.Ellipsis,
-//                lineHeight = 18.sp
-//            )
+            Row(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.loc_ic),
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = restaurant.region,
+                    fontFamily = fontFamily,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }

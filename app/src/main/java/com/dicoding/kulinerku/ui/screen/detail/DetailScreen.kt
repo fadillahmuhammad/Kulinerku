@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -201,7 +202,6 @@ fun DetailContent(
                     }
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
         TabRow(
             selectedTabIndex = selectedTabIndex,
             modifier = modifier.fillMaxWidth(),
@@ -249,10 +249,9 @@ fun DetailContent(
             0 -> {
                 LazyColumn(
                     modifier = Modifier,
-                    contentPadding = PaddingValues(bottom = 26.dp)
+                    contentPadding = PaddingValues(top = 16.dp, bottom = 26.dp)
                 ) {
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
+                    items(restaurant.reviews) { review ->
                         Row(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -263,26 +262,13 @@ fun DetailContent(
                                 modifier = Modifier.size(24.dp)
                             )
                             Spacer(modifier = Modifier.width(16.dp))
-                            Text(text = "Rekomendasi banget! tempatnya nyaman.")
+                            Text(text = review.text)
                         }
-                        Divider(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp))
-                        Row(
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.profile_ic),
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(text = "Enak buat belajar! recomended.")
-                        }
-                        Divider(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp))
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp)
+                        )
                     }
                 }
             }
@@ -306,9 +292,11 @@ fun DetailContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(text = price)
                         }
-                        Divider(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp))
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp)
+                        )
                         Row(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -321,9 +309,11 @@ fun DetailContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(text = rate)
                         }
-                        Divider(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp))
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp)
+                        )
                         Row(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -336,9 +326,11 @@ fun DetailContent(
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(text = address)
                         }
-                        Divider(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp))
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp)
+                        )
                     }
                 }
             }

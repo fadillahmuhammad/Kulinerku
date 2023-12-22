@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.dicoding.kulinerku.data.UserRepository
 import com.dicoding.kulinerku.data.local.entity.RestaurantEntity
 import com.dicoding.kulinerku.model.Restaurant
+import com.dicoding.kulinerku.model.dummyRestaurant
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -43,6 +44,9 @@ class HomeViewModel(private val repository: UserRepository) : ViewModel() {
 
     private fun List<RestaurantEntity>.toRestaurantList(): List<Restaurant> {
         return map { restaurantEntity ->
+            val dummyRestaurant = dummyRestaurant.find { it.id == restaurantEntity.id }
+            val reviews = dummyRestaurant?.reviews ?: emptyList()
+
             Restaurant(
                 id = restaurantEntity.id,
                 image = restaurantEntity.image,
@@ -52,10 +56,12 @@ class HomeViewModel(private val repository: UserRepository) : ViewModel() {
                 price = restaurantEntity.price,
                 street = restaurantEntity.street,
                 region = restaurantEntity.region,
-                subdistrict = restaurantEntity.subdistrict
+                subdistrict = restaurantEntity.subdistrict,
+                reviews = reviews
             )
         }
     }
+
 
     fun insertFavorite(restaurant: RestaurantEntity) {
         viewModelScope.launch {
