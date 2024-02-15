@@ -5,7 +5,7 @@
 - Slicing design to code using Jetpack Compose
 - State Hoisting
 - MVVM Architecture
-- Local Data Storage, Shared Preference
+- Local Database Room & Shared Preference
 - API Authentication Login & Register
 - API Model (recommendation MSME from user preference)
 - API Testing using Postman
